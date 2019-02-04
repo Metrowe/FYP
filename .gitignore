@@ -1,0 +1,8 @@
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+quickRunFyp.bat
+app_files/static/images/results/*
+app_files/static/images/uploads/*
