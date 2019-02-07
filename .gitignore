@@ -1,0 +1,8 @@
+
+#page renderings to be ignored
+icw/app_files/static/images/results/*
+icw/app_files/static/images/uploads/*
+
+#uploads 
+icw/app_files/handling/*
+icw/__pycache__/*
