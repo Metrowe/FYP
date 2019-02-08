@@ -6,6 +6,13 @@ import cv2
 import os
 from flask import Flask, render_template, request
 import imageClassification
+import tempConfig
+
+# import os
+
+abspath = os.path.abspath(__file__)
+dname = os.path.dirname(abspath)
+os.chdir(dname)
 
 def ensurePath(path):
 	if not os.path.exists(path):
@@ -15,10 +22,15 @@ def ensurePath(path):
 
 app = Flask(__name__,template_folder='app_files/templates',static_folder='app_files/static')
 
-if 'FYP' in os.listdir('.'):
-	ROOT_FOLDER = os.path.join('FYP','icw','app_files')
-else:
-	ROOT_FOLDER = os.path.basename('app_files')
+# if 'FYP' in os.listdir('.'):
+# 	tempConfig.BASE_FOLDER = os.path.join('FYP','icw')
+# 	ROOT_FOLDER = os.path.join('FYP','icw','app_files')
+# else:
+# 	tempConfig.BASE_FOLDER = os.path.basename('.')
+# 	ROOT_FOLDER = os.path.basename('app_files')
+
+
+ROOT_FOLDER = os.path.basename('app_files')
 
 
 HANDLING_FOLDER = ensurePath( os.path.join(ROOT_FOLDER,'handling') )
@@ -31,12 +43,9 @@ RESULT_IMAGES = ensurePath( os.path.join(STATIC_FOLDER,'images','results') )
 
 UPLOAD_IMAGES = ensurePath( os.path.join(STATIC_FOLDER,'images','uploads') )
 
-
-
 # UPLOAD_IMAGES = os.path.join(ROOT_FOLDER,'handling','uploads')
 # UPLOAD_IMAGES = ROOT_FOLDER
 # UPLOAD_IMAGES = os.path.join(ROOT_FOLDER,'static')
-
 
 @app.route('/')
 def index():
