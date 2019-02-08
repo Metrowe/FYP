@@ -7,16 +7,29 @@ import os
 from flask import Flask, render_template, request
 import imageClassification
 
-app = Flask(__name__,template_folder="app_files/templates",static_folder="app_files/static")
+def ensurePath(path):
+	if not os.path.exists(path):
+		os.makedirs(path)
 
-ROOT_FOLDER = os.path.basename('app_files')
+	return path
 
-STATIC_FOLDER = os.path.basename('static')
+app = Flask(__name__,template_folder='app_files/templates',static_folder='app_files/static')
 
-EXAMPLE_IMAGES = os.path.join(STATIC_FOLDER,'images','examples')
-RESULT_IMAGES = os.path.join(STATIC_FOLDER,'images','results')
+if 'FYP' in os.listdir('.'):
+	ROOT_FOLDER = os.path.join('FYP','icw','app_files')
+else:
+	ROOT_FOLDER = os.path.basename('app_files')
 
-UPLOAD_IMAGES = os.path.join(STATIC_FOLDER,'images','uploads')
+
+HANDLING_FOLDER = ensurePath( os.path.join(ROOT_FOLDER,'handling') )
+
+
+STATIC_FOLDER = ensurePath( os.path.basename('static') )
+
+EXAMPLE_IMAGES = ensurePath( os.path.join(STATIC_FOLDER,'images','examples') )
+RESULT_IMAGES = ensurePath( os.path.join(STATIC_FOLDER,'images','results') )
+
+UPLOAD_IMAGES = ensurePath( os.path.join(STATIC_FOLDER,'images','uploads') )
 
 
 
@@ -27,11 +40,11 @@ UPLOAD_IMAGES = os.path.join(STATIC_FOLDER,'images','uploads')
 
 @app.route('/')
 def index():
-    local_time = "Local time:" + time.ctime(time.time())
+    local_time = 'Local time:' + time.ctime(time.time())
 
     # return local_time
-    return render_template("index.html",exampleImage = os.path.join(EXAMPLE_IMAGES,'deereg.jpg'))
-    # return render_template("index.html")
+    return render_template('index.html',exampleImage = os.path.join(EXAMPLE_IMAGES,'deereg.jpg'))
+    # return render_template('index.html')
 
 # @app.route('/upload')
 # def upload():
@@ -60,15 +73,15 @@ def upload():
 		# Constructs path for image to be saved to
 		# path = os.path.join(UPLOAD_IMAGES, file.filename)
 		# path = os.path.join(ROOT_FOLDER, UPLOAD_IMAGES, file.filename)
-		path = os.path.join(ROOT_FOLDER,"handling",file.filename)
+		path = os.path.join(HANDLING_FOLDER,file.filename)
 
 		file.save(path)
 
 
 		# newImagePath = os.path.join(UPLOAD_IMAGES, file.filename)
-		newImagePath = ""
+		newImagePath = ''
 
-		classResult = "test label"
+		classResult = 'test label'
 
 		# # Sets the model if not already done and attempts to classify the image
 		# setModel()
@@ -85,5 +98,5 @@ def upload():
 		# Renders upload page with classification info and the processed image
 		return render_template('upload.html',valid_submit = True, display_image = newImagePath, class_label = classResult)
 
-		return render_template('upload.html',valid_submit = False)
+		# return render_template('upload.html',valid_submit = False)
 
