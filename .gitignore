@@ -7,6 +7,6 @@ quickRunFyp.bat
 #icw/static/images/uploads/*
 
 #uploads 
-icw/handling/*
+# icw/handling/*
 
 icw/__pycache__/*
