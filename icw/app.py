@@ -4,9 +4,10 @@ import time
 import tensorflow
 import cv2
 import os
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import imageClassification
 import tempConfig
+import json
 
 # import os
 
@@ -14,13 +15,14 @@ abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
 os.chdir(dname)
 
-def ensurePath(path):
-	if not os.path.exists(path):
-		os.makedirs(path)
+# def ensurePath(path):
+# 	if not os.path.exists(path):
+# 		os.makedirs(path)
 
-	return path
+# 	return path
 
-app = Flask(__name__,template_folder='app_files/templates',static_folder='app_files/static')
+# app = Flask(__name__,template_folder='app_files/templates',static_folder='app_files/static')
+app = Flask(__name__,template_folder='templates',static_folder='static')
 
 # if 'FYP' in os.listdir('.'):
 # 	tempConfig.BASE_FOLDER = os.path.join('FYP','icw')
@@ -29,31 +31,60 @@ app = Flask(__name__,template_folder='app_files/templates',static_folder='app_fi
 # 	tempConfig.BASE_FOLDER = os.path.basename('.')
 # 	ROOT_FOLDER = os.path.basename('app_files')
 
-
-ROOT_FOLDER = os.path.basename('app_files')
-
-
-HANDLING_FOLDER = ensurePath( os.path.join(ROOT_FOLDER,'handling') )
-
-
-STATIC_FOLDER = ensurePath( os.path.basename('static') )
-
-EXAMPLE_IMAGES = ensurePath( os.path.join(STATIC_FOLDER,'images','examples') )
-RESULT_IMAGES = ensurePath( os.path.join(STATIC_FOLDER,'images','results') )
-
-UPLOAD_IMAGES = ensurePath( os.path.join(STATIC_FOLDER,'images','uploads') )
+####################
+# ROOT_FOLDER = os.path.basename('app_files')
+HANDLING_FOLDER = os.path.join('handling','uploads')
+STATIC_FOLDER = os.path.basename('static')
+EXAMPLE_IMAGES = os.path.join(STATIC_FOLDER,'images','examples')
+RESULT_IMAGES = os.path.join(STATIC_FOLDER,'images','results')
+####################
+# ROOT_FOLDER = os.path.basename('app_files')
+# HANDLING_FOLDER = os.path.join(ROOT_FOLDER,'handling','uploads')
+# STATIC_FOLDER = os.path.basename('static')
+# EXAMPLE_IMAGES = os.path.join(STATIC_FOLDER,'images','examples')
+# RESULT_IMAGES = os.path.join(STATIC_FOLDER,'images','results')
+##################
+# ROOT_FOLDER = os.path.basename('app_files')
+# HANDLING_FOLDER = ensurePath( os.path.join(ROOT_FOLDER,'handling','uploads') )
+# STATIC_FOLDER = ensurePath( os.path.basename('static') )
+# EXAMPLE_IMAGES = ensurePath( os.path.join(STATIC_FOLDER,'images','examples') )
+# RESULT_IMAGES = ensurePath( os.path.join(STATIC_FOLDER,'images','results') )
+# UPLOAD_IMAGES = ensurePath( os.path.join(STATIC_FOLDER,'images','uploads') )
+####################
 
 # UPLOAD_IMAGES = os.path.join(ROOT_FOLDER,'handling','uploads')
 # UPLOAD_IMAGES = ROOT_FOLDER
 # UPLOAD_IMAGES = os.path.join(ROOT_FOLDER,'static')
+
+# <link rel="stylesheet" href="{{ theme }}">
+
+activeTheme = "static/themes/theme-electricity.css"
+# activeTheme = "static/themes/theme-pastel.css"
+# activeTheme = "static/themes/theme-sunset.css"
 
 @app.route('/')
 def index():
     local_time = 'Local time:' + time.ctime(time.time())
 
     # return local_time
-    return render_template('index.html',exampleImage = os.path.join(EXAMPLE_IMAGES,'deereg.jpg'))
     # return render_template('index.html')
+
+    # return render_template('index.html',exampleImage = os.path.join(EXAMPLE_IMAGES,'deereg.jpg'))
+    return render_template('index.html',theme = activeTheme,exampleImage = os.path.join(EXAMPLE_IMAGES,'deereg.jpg'))
+
+@app.route('/testreq')
+def testreq():
+	#make dict
+
+	# d = 1
+	d =	{
+		"imageurl": "Ford",
+		"model": "Mustang",
+		"year": 1964
+	}
+	return jsonify(d)
+	# return json.dumps(d)
+	# return "hellotesdffsdfasfa"
 
 # @app.route('/upload')
 # def upload():
@@ -95,7 +126,7 @@ def upload():
 		# # Sets the model if not already done and attempts to classify the image
 		# setModel()
 		# global model
-		dest = os.path.join(ROOT_FOLDER,RESULT_IMAGES,file.filename)
+		dest = os.path.join(RESULT_IMAGES,file.filename)
 
 		classResult = imageClassification.classifyImage(path,dest)
 
