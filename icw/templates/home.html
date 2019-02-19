@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Flask Image App Index</title>
+			<meta charset="utf-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1">
+			<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+			<!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script> -->
+			<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script> -->
+	<!-- 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> -->
+	
+
+  			<!-- <link rel="stylesheet" href="{{ theme }}"> -->
+  			<!-- <link rel="stylesheet" href="static/themes/theme-electricity.css"> -->
+  			<!-- <link rel="stylesheet" href="static/themes/theme-sunset.css"> -->
+  			 <link rel="stylesheet" href="static/themes/theme-dark.css">
+	</head>
+	<body class="theme-colour-a">
+	<!-- <body> -->
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  			<a class="navbar-brand" href="#">Isolate & Classify Wildlife</a>
+  			<!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    			<span class="navbar-toggler-icon"></span>
+		  	</button> -->
+		  <div class="collapse navbar-collapse">
+		    <div class="navbar-nav">
+		      <a class="nav-item nav-link active" href="/">Home </a>
+		      <a class="nav-item nav-link" href="/gallery">Gallery</a>
+		      <a class="nav-item nav-link" href="/about">About</a>
+		    </div>
+		  </div>
+		</nav>
+
+
+
+		<!-- <ul class="nav nav-pills justify-content-center"">
+
+			
+			<li class="nav-item">
+				<div class="navbar-brand">Isolate & Classify Wildlife</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link theme-colour-b" href="/">Home</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link theme-colour-c" href="/gallery">Gallery</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link theme-colour-c" href="/about">About</a>
+			</li>
+		</ul> -->
+
+		<!-- <title>Isolate & Classify Wildlife</title>
+		<a class="theme-colour-a" href="/">Upload</a>
+		<a class="theme-colour-b" href="/gallery">Gallery</a>
+		<a class="theme-colour-c" href="/about">About</a>
+		<a class="theme-colour-d" href="/login">Login</a>
+		<a class="theme-colour-e" href="/logout">Logout</a>
+		<a class="theme-colour-e" href="/test">test</a>
+		<br>
+ -->
+ 		<br>
+ 		<div class="container d-flex justify-content-between">
+
+		<div class="row">
+			<!-- Example and result box -->
+			<div class="col-sm-6 theme-colour-b">
+				<div class="text-center">Example</div>
+				<div class="row">
+					<div class="col">
+						<div class="text-center">Uploaded Image</div>
+						<img class="img-responsive border rounded mx-auto d-block" src="static/images/examples/antelope-input-example.jpg" alt="Display Image" width="100%">
+					</div>
+					<div class="col">
+						<div class="text-center">Result</div>
+						<img class="img-responsive border rounded mx-auto d-block" src="static/images/examples/antelope-output-example.jpg" alt="Display Image" width="100%">
+						<div class="text-center">Animal: Antelope</div>
+					</div>
+				</div>
+				<p>Bootstrap is the most popular HTML, CSS, and JS framework for developing responsive, mobile-first projects on the web.</p> 
+			</div>
+			<!-- Submit and question box -->
+			<div class="col-sm-6 theme-colour-c">
+				<form>
+					<input type="submit" class="btn btn-primary btn-lg btn-block" value="Submit">
+					<input type="file" class="btn btn-primary btn-lg btn-block" value="Submit">
+
+					<div class="row">
+						<div class="col-sm-8 ">
+							<p>Can your uploaded image be added to the icwildlife gallery? (Images are filtered before being added to gallery)</p>
+						</div>
+						<div class="col-sm-4 text-center">
+							<input type="radio" name="rateRemove" value="yes" checked> Yes<br>
+							<input type="radio" name="rateRemove" value="no"> No
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		</div>
+
+		<br>
+		<!-- Don't include this div/section if an image hasn't been successfully submitted -->
+		<div class="container ">
+		<!-- <form action="/action_page.php"> -->
+			<form>
+				<h3 class="text-center">Feedback Form</h3>
+
+				<!-- First feedback row -->
+				<div class="row border rounded theme-colour-b ">
+					<div class="col-sm-6 ">
+						<p>Was the image labelled correctly?</p>
+					</div>
+					<div class="col-sm-6 ">
+						<input type="radio" name="rateClassify" value="yes"> Yes<br>
+	 					<input type="radio" name="rateClassify" value="no"> No
+					</div>
+				</div>
+				<br>
+				<!-- Second feedback row -->
+				<div class="row border rounded theme-colour-b ">
+					<div class="col-sm-6 ">
+						<p>How effective was the background removal?</p>
+					</div>
+					<div class="col-sm-6 ">
+						<input type="radio" name="rateRemove" value="perfect"> Perfect<br>
+						<input type="radio" name="rateRemove" value="good"> Good<br>
+						<input type="radio" name="rateRemove" value="poor"> Poor<br>
+						<input type="radio" name="rateRemove" value="failure"> Failure
+					</div>
+				</div>
+				<br>
+				<!-- Third feedback row -->
+				<div class="row border rounded theme-colour-b ">
+					<div class="col-sm-12 ">
+						<p>Any comments on the labeling or background removal of the reult image?</p>
+					</div>
+					<div class="col-sm-12 ">
+						<input style="margin:1%" class=" w-100 " type="text" name="commentResult" value="">
+					</div>
+				</div>
+				<br>
+				<!-- Fourth feedback row -->
+				<div class="row border rounded theme-colour-b ">
+					<div class="col-sm-8 ">
+						<p>Comments or suggestions for this website?</p>
+						<input style="margin:1%" class=" w-100 " type="text" name="commentSite" value="">
+					</div>
+					
+					<div class="col-sm-4 ">
+						  <input  type="submit" class="btn btn-primary btn-lg btn-block h-100 " value="Submit">
+					</div>
+
+				</div>
+			</form>
+		</div>
+		<!-- <img class="img-responsive" src="{{ exampleImage }}" alt="Display Image" width="50%"> -->
+	</body>
+	<script src="static/clientCode/clientHome.js"></script>
+</html>

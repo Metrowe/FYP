@@ -6,33 +6,30 @@
 
 .theme-colour-a
 {
-	background-color:rgb(17, 47, 65);
+	background-color:rgb(0, 0, 0);
 	color:White;
 }
 
 .theme-colour-b
 {
-	background-color:rgb(6, 133, 135);
+	background-color:rgb(52, 58, 64);
 	color:White;
 }
 
 .theme-colour-c
 {
-	background-color:rgb(79, 185, 159);
-	color:Black;
-
+	background-color:rgb(62, 68, 74);
+	color:White;
 }
 
 .theme-colour-d
 {
 	background-color:rgb(242, 177, 52);
-	color:Black;
-
+	color:White;
 }
 
 .theme-colour-e
 {
 	background-color:rgb(237, 85, 59);
-	color:Black;
-
+	color:White;
 }

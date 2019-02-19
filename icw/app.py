@@ -63,14 +63,32 @@ activeTheme = "static/themes/theme-electricity.css"
 # activeTheme = "static/themes/theme-sunset.css"
 
 @app.route('/')
-def index():
+def home():
     local_time = 'Local time:' + time.ctime(time.time())
 
     # return local_time
     # return render_template('index.html')
 
     # return render_template('index.html',exampleImage = os.path.join(EXAMPLE_IMAGES,'deereg.jpg'))
-    return render_template('index.html',theme = activeTheme,exampleImage = os.path.join(EXAMPLE_IMAGES,'deereg.jpg'))
+    return render_template('home.html',theme = activeTheme)
+    # return render_template('home.html',theme = activeTheme,exampleImage = os.path.join(EXAMPLE_IMAGES,'deereg.jpg'))
+
+@app.route('/about')
+def about():
+	return render_template('about.html')
+
+@app.route('/gallery')
+def gallery():
+	return render_template('gallery.html')
+
+@app.route('/login')
+def login():
+	return render_template('login.html')
+
+@app.route('/signup')
+def signup():
+	return render_template('signup.html')
+
 
 @app.route('/testreq')
 def testreq():
