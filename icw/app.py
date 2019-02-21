@@ -62,6 +62,7 @@ activeTheme = "static/themes/theme-electricity.css"
 # activeTheme = "static/themes/theme-pastel.css"
 # activeTheme = "static/themes/theme-sunset.css"
 
+### Pages ###
 @app.route('/')
 def home():
     local_time = 'Local time:' + time.ctime(time.time())
@@ -88,8 +89,9 @@ def login():
 @app.route('/signup')
 def signup():
 	return render_template('signup.html')
+### End pages ###
 
-
+### API ###
 @app.route('/testreq')
 def testreq():
 	#make dict
@@ -103,6 +105,23 @@ def testreq():
 	return jsonify(d)
 	# return json.dumps(d)
 	# return "hellotesdffsdfasfa"
+
+@app.route('/static/clientCode/clientHome')
+def divert():
+	#make dict
+
+	# d = 1
+	d =	{
+		"imageurl": "Ford",
+		"model": "Mustang",
+		"year": 1964
+	}
+	return jsonify(d)
+	# return json.dumps(d)
+	# return "hellotesdffsdfasfa"
+
+### End API ###
+
 
 # @app.route('/upload')
 # def upload():

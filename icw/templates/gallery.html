@@ -1,22 +1,126 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Flask Image App Index</title>
+		<title>Isolate & Classify Wildlife</title>
+			<meta charset="utf-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1">
+			<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
 	
+  			<link rel="stylesheet" href="static/themes/theme-pastel.css">
   			<!-- <link rel="stylesheet" href="static/themes/theme-electricity.css"> -->
-  			<link rel="stylesheet" href="static/themes/theme-sunset.css">
+  			<!-- <link rel="stylesheet" href="static/themes/theme-sunset.css"> -->
+  			<!-- <link rel="stylesheet" href="static/themes/theme-blank.css"> -->
+  			<!-- <link rel="stylesheet" href="static/themes/theme-dark.css"> -->
+
 	</head>
-	<body class="theme-colour-a basic " width="90%" height="90%">
-		<p>Text</p>
-		<div class="theme-colour-b basic " width="90%" height="90%">
-			<p>Text</p>
-			<div class="theme-colour-c basic " width="90%" height="90%">
-				<p>Text</p>
-				<div class="theme-colour-d basic " width="90%" height="90%">
-					<p>Text</p>
+	<body class="theme-colour-a h-100 w-100">
+	<!-- <body> -->
+		<nav class="navbar navbar-expand  theme-colour-b">
+			<a class="navbar-brand link-active" href="">Isolate & Classify Wildlife</a>
+			<div class="collapse navbar-collapse">
+				<div class="navbar-nav">
+					<a class="nav-item nav-link link-inactive " href="/">Home </a>
+					<a class="nav-item nav-link link-active " href="/gallery">Gallery</a>
+					<a class="nav-item nav-link link-inactive " href="/about">About</a>
+					<a class="nav-item nav-link link-inactive" href="/login">Login</a>
+					<a class="nav-item nav-link link-inactive" href="/signup">Signup</a>
+				</div>
+			</div>
+		</nav>
+		<br>
+		<!-- Different after this point -->
+		<div class="container  w-50 theme-colour-c">
+			<form>
+
+				<h3 class="text-center">Gallery</h3>
+
+				<div class="row  rounded ">
+					<div class="col-sm-12 ">
+						<input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search animals">
+					</div>
+				</div>
+				<br>
+				<div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-outline-secondary">All</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary">Originals</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary">Cropped</button>
+                </div>
+                <br>
+                <div class="row  rounded ">
+					<div class="col-sm-6 ">
+						<div>
+		                	Most searched:
+		                </div>
+					</div>
+					<div class="col-sm-6 ">
+						<div class="btn-group">
+		                  <button type="button" class="btn btn-sm btn-outline-primary">Dolphin</button>
+		                  <button type="button" class="btn btn-sm btn-outline-primary">Lion</button>
+		                  <button type="button" class="btn btn-sm btn-outline-primary">Bat</button>
+		                </div>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class=" album py-5 ">
+			<div style="padding:2%" class=" container w-90 theme-colour-b ">
+				<div style="margin:0.1%"class=" row ">
+					<div class="col-md-4 theme-colour-c">
+						<div style="margin:3%" class=" card mb-4 ">
+							<img style="margin:0%" class=" rounded " src="static/images/examples/elephant-example.jpg" alt="Display Image" width="100%">
+						</div>
+						<div class="card-body">
+							<p class="card-text">
+								This will have the label of the animal and possibly the user who uploaded.
+							</p>
+						</div>
+					</div>
+					<div class="col-md-4 theme-colour-c">
+						<div style="margin:3%" class=" card mb-4 ">
+							<img style="margin:0%" class=" rounded " src="static/images/examples/dolphin-example.jpg" alt="Display Image" width="100%">
+						</div>
+						<div class="card-body">
+							<p class="card-text">
+								This will have the label of the animal and possibly the user who uploaded.
+							</p>
+						</div>
+					</div>
+					<div class="col-md-4 theme-colour-c">
+						<div style="margin:3%" class=" card mb-4 ">
+							<img style="margin:0%" class=" rounded " src="static/images/examples/buffalo-example.jpg" alt="Display Image" width="100%">
+						</div>
+						<div class="card-body">
+							<p class="card-text">
+								This will have the label of the animal and possibly the user who uploaded.
+							</p>
+						</div>
+					</div>
+					<div class="col-md-4 theme-colour-c">
+						<div style="margin:3%" class=" card mb-4 ">
+							<img style="margin:0%" class=" rounded " src="static/images/examples/otter-example.jpg" alt="Display Image" width="100%">
+						</div>
+						<div class="card-body">
+							<p class="card-text">
+								This will have the label of the animal and possibly the user who uploaded.
+							</p>
+						</div>
+					</div>
+					<div class="col-md-4 theme-colour-c">
+						<div style="margin:3%" class=" card mb-4 ">
+							<img style="margin:0%" class=" rounded " src="static/images/examples/polar+bear-example.jpg" alt="Display Image" width="100%">
+						</div>
+						<div class="card-body">
+							<p class="card-text">
+								This will have the label of the animal and possibly the user who uploaded.
+							</p>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
+
+
 	</body>
 	<script src="static/clientCode/clientGallery.js"></script>
 </html>

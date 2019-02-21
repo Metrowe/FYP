@@ -33,3 +33,17 @@
 	background-color:rgb(237, 85, 59);
 	color:White;
 }
+
+.link-active
+{
+	color:White;
+}
+
+.link-inactive
+{
+	color:rgba(255, 255, 255,0.5);
+}
+
+a:hover, a:active {
+  color:White;
+}

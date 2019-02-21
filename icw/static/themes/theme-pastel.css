@@ -30,3 +30,17 @@
 	color:Black;
 
 }
+
+.link-active
+{
+	color:Black;
+}
+
+.link-inactive
+{
+	color:rgba(0, 0, 0,0.5);
+}
+
+a:hover, a:active {
+  color:Black;
+}
