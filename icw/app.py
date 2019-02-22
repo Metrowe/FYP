@@ -31,12 +31,18 @@ app = Flask(__name__,template_folder='templates',static_folder='static')
 # 	tempConfig.BASE_FOLDER = os.path.basename('.')
 # 	ROOT_FOLDER = os.path.basename('app_files')
 
-####################
-# ROOT_FOLDER = os.path.basename('app_files')
 HANDLING_FOLDER = os.path.join('handling','uploads')
 STATIC_FOLDER = os.path.basename('static')
 EXAMPLE_IMAGES = os.path.join(STATIC_FOLDER,'images','examples')
-RESULT_IMAGES = os.path.join(STATIC_FOLDER,'images','results')
+ORIGINAL_IMAGES = os.path.join(STATIC_FOLDER,'images','original')
+ISOLATE_IMAGES = os.path.join(STATIC_FOLDER,'images','isolate')
+####################
+# ROOT_FOLDER = os.path.basename('app_files')
+# HANDLING_FOLDER = os.path.join('handling','uploads')
+# STATIC_FOLDER = os.path.basename('static')
+# EXAMPLE_IMAGES = os.path.join(STATIC_FOLDER,'images','examples')
+# UPLOAD_IMAGES = os.path.join(STATIC_FOLDER,'images','results')
+# RESULT_IMAGES = os.path.join(STATIC_FOLDER,'images','results')
 ####################
 # ROOT_FOLDER = os.path.basename('app_files')
 # HANDLING_FOLDER = os.path.join(ROOT_FOLDER,'handling','uploads')
@@ -128,52 +134,103 @@ def divert():
 #     return render_template('upload.html')
 
 # Flask App upload
-# Renders a page with a file upload
-@app.route('/upload', methods=['GET','POST'])
+@app.route('/upload', methods=['POST'])
 def upload():
-	# Base upload page is rendered if GET request received
-	if request.method == 'GET':
-		return render_template('upload.html',valid_submit = False)
 
-	# Start processing if POST request received
-	elif request.method == 'POST':
-		# Handles error if image file is not in request
-		try:
-			file = request.files['image']
-		except:
-			file = None
+	# Handles error if image file is not in request
+	try:
+		file = request.files['image']
+	except:
+		file = None
 
-		# Renders upload page with error if no file received
-		if file == None:
-			return render_template('upload.html',failed_submit = True)
+	# Renders upload page with error if no file received
+	if file == None:
+		return None
 
-		# Constructs path for image to be saved to
-		# path = os.path.join(UPLOAD_IMAGES, file.filename)
-		# path = os.path.join(ROOT_FOLDER, UPLOAD_IMAGES, file.filename)
-		path = os.path.join(HANDLING_FOLDER,file.filename)
+	# Constructs path for image to be saved to
+	# path = os.path.join(UPLOAD_IMAGES, file.filename)
+	# path = os.path.join(ROOT_FOLDER, UPLOAD_IMAGES, file.filename)
+	path = os.path.join(ORIGINAL_IMAGES,file.filename)
 
-		file.save(path)
+	file.save(path)
 
 
-		# newImagePath = os.path.join(UPLOAD_IMAGES, file.filename)
-		newImagePath = ''
+	# newImagePath = os.path.join(UPLOAD_IMAGES, file.filename)
+	newImagePath = ''
 
-		classResult = 'test label'
+	classResult = 'test label'
 
-		# # Sets the model if not already done and attempts to classify the image
-		# setModel()
-		# global model
-		dest = os.path.join(RESULT_IMAGES,file.filename)
+	# # Sets the model if not already done and attempts to classify the image
+	# setModel()
+	# global model
+	dest = os.path.join(ISOLATE_IMAGES,file.filename)
 
-		classResult = imageClassification.classifyImage(path,dest)
+	classResult = imageClassification.classifyImage(path,dest)
 
-		# # Passes the image path to be processed and the destination directory path
-		# destDir = app.config['STATIC_FOLDER']
-		# newImagePath = ip.processImage(path,destDir)
-		newImagePath = os.path.join(RESULT_IMAGES,file.filename)
+	# # Passes the image path to be processed and the destination directory path
+	# destDir = app.config['STATIC_FOLDER']
+	# newImagePath = ip.processImage(path,destDir)
+	newImagePath = os.path.join(ISOLATE_IMAGES,file.filename)
 
-		# Renders upload page with classification info and the processed image
-		return render_template('upload.html',valid_submit = True, display_image = newImagePath, class_label = classResult)
+	# Renders upload page with classification info and the processed image
+	result = {
+		"inputPath": path,
+		"outputPath": newImagePath,
+		"label": classResult
+	}
+	return jsonify(result)
+	# return render_template('upload.html',valid_submit = False)
 
-		# return render_template('upload.html',valid_submit = False)
+@app.route('/oldupload', methods=['GET','POST'])
+def oldupload():
+	print('called oldupload')
+
+# # Renders a page with a file upload
+# @app.route('/oldupload', methods=['GET','POST'])
+# def oldupload():
+# 	# Base upload page is rendered if GET request received
+# 	if request.method == 'GET':
+# 		return render_template('upload.html',valid_submit = False)
+
+# 	# Start processing if POST request received
+# 	elif request.method == 'POST':
+# 		# Handles error if image file is not in request
+# 		try:
+# 			file = request.files['image']
+# 		except:
+# 			file = None
+
+# 		# Renders upload page with error if no file received
+# 		if file == None:
+# 			return render_template('upload.html',failed_submit = True)
+
+# 		# Constructs path for image to be saved to
+# 		# path = os.path.join(UPLOAD_IMAGES, file.filename)
+# 		# path = os.path.join(ROOT_FOLDER, UPLOAD_IMAGES, file.filename)
+# 		path = os.path.join(HANDLING_FOLDER,file.filename)
+
+# 		file.save(path)
+
+
+# 		# newImagePath = os.path.join(UPLOAD_IMAGES, file.filename)
+# 		newImagePath = ''
+
+# 		classResult = 'test label'
+
+# 		# # Sets the model if not already done and attempts to classify the image
+# 		# setModel()
+# 		# global model
+# 		dest = os.path.join(RESULT_IMAGES,file.filename)
+
+# 		classResult = imageClassification.classifyImage(path,dest)
+
+# 		# # Passes the image path to be processed and the destination directory path
+# 		# destDir = app.config['STATIC_FOLDER']
+# 		# newImagePath = ip.processImage(path,destDir)
+# 		newImagePath = os.path.join(RESULT_IMAGES,file.filename)
+
+# 		# Renders upload page with classification info and the processed image
+# 		return render_template('upload.html',valid_submit = True, display_image = newImagePath, class_label = classResult)
+
+# 		# return render_template('upload.html',valid_submit = False)
 

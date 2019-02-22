@@ -32,6 +32,8 @@ def createModel():
 	              metrics=['accuracy'])
 
 	return model
+	#add 32 then 16
+	#go to 64 96 64 output
 
 def makeSquare(image,padColour):
 	height, width, channels = image.shape
