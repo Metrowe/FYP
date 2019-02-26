@@ -1,34 +1,9 @@
 
-
-async function getJsonData(url)
+//If no options set as null
+async function getJsonData(url, options)
 {
 	var returnData = null
-	await fetch(url)
-	.then((resp) => resp.json())
-	.then(function(data) 
-	{
-		returnData = data;
-		
-	})
-	.catch(function(error) 
-	{
-		console.log(error);
-	}); 
-
-	return returnData;
-}
-
-//Rename this or mix it with
-async function tempgetJsonData(url)
-{
-	let formData = new FormData();
-	formData.append("image", document.getElementById("changeid").files[0]);
-	
-
-
-	var returnData = null
-	// await fetch(url)
-	await fetch(url, {method: "POST", body: formData})
+	await fetch(url, options)
 	.then((resp) => resp.json())
 	.then(function(data) 
 	{
@@ -45,31 +20,36 @@ async function tempgetJsonData(url)
 
 async function postUpload()
 {
-	console.log("postupload called");
+	let inputImage = document.getElementById('upload-input');
+	let outputImage = document.getElementById('upload-output');
+	let label = document.getElementById('upload-label');
+	
+	inputImage.src = "";
+	outputImage.src = "";
+	label.textContent = "loading...";
 
+	//prepare get jsondata
+	url = window.location.href + "upload";
 
+	let formData = new FormData();
+	formData.append("image", document.getElementById("changeid").files[0]);
 
-	// url = window.location.href + "oldupload"
-	url = window.location.href + "upload"
-	let testData = await tempgetJsonData(url);
+	let testData = await getJsonData(url,{method: "POST", body: formData});
 
-	document.getElementById('upload-input').src = testData.inputPath
-	document.getElementById('upload-output').src = testData.outputPath
-
-	document.getElementById('upload-label').textContent = testData.label
-
+	inputImage.src = testData.inputPath;
+	outputImage.src = testData.outputPath;
+	label.textContent = testData.label;
 
 	console.log(url);
 	console.log(testData);
-
-	// document.getElementById("profileAvatar").src = userData.avatar_url;	
 }
+
 
 
 async function testget()
 {
 	url = window.location.href + "testreq"
-	let testData = await getJsonData(url);
+	let testData = await getJsonData(url, null);
 
 	console.log(url);
 	console.log(testData);

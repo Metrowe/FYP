@@ -1,14 +1,20 @@
 from sqlalchemy.orm import sessionmaker
 
-
-# from sqlalchemy import Integer, String, text, Boolean
 from sqlalchemy import Integer, String, Boolean, Text
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
-import database_classes as tables
+# from sqlalchemy import create_engine
+
+from sqlalchemy.orm import scoped_session
+# from sqlalchemy.orm import sessionmaker
+
+import database_classes as table
+
+# import database_modify as dbModify
 
 # 'mysql+pymysql://' (the dialect and driver).
 # 'student:datacamp' (the username and password).
@@ -17,62 +23,52 @@ import database_classes as tables
 
 # engine = create_engine('mysql+pymysql://'+'student:datacamp'+'@courses.csrrinzqubik.us-east-1.rds.amazonaws.com:3306/'+'census')
 # engine = create_engine('mysql+pymysql://'+'metrowe:navybottle'+'@127.0.0.1:3306/'+'icwdata')
-Base = declarative_base()
-
-# Print the table names
-# print(engine.table_names())
-
-
-
-
-### TABLES ###
-class Image(Base):
-    __tablename__ = "image"
-
-    id = Column(Integer, primary_key=True)
-    path = Column(Text,nullable=False)
-    animal = Column(Text,nullable=False)
-    original = Column(Boolean,nullable=False)
-
-class Feedback(Base):
-    __tablename__ = "feedback"
-
-    id = Column(Integer, primary_key=True)
-    rateClassify = Column(Text,nullable=False)
-    rateIsolate = Column(Text,nullable=False)
-    commentResult = Column(Text,nullable=True)
-    commentSite = Column(Text,nullable=True)
-
-class User(Base):
-    __tablename__ = "user"
-
-    id = Column(Integer, primary_key=True)
-    username = Column(Text,nullable=False)
-    password = Column(Text,nullable=False)
-
-class Submission(Base):
-	__tablename__ = "submission"
-
-	id = Column(Integer, primary_key=True)
-	galleryPass = Column(Boolean,nullable=False)
-	modApproval = Column(Boolean,nullable=False)
-
-	originalId = Column(Integer,ForeignKey('image.id'))
-	isolateId = Column(Integer,ForeignKey('image.id'))
-	feedbackId = Column(Integer,ForeignKey('feedback.id'),nullable=True)
-	userId = Column(Integer,ForeignKey('user.id'),nullable=True)
-
-	originalImage = relationship(Image, foreign_keys=[originalId])
-	isolateImage = relationship(Image, foreign_keys=[isolateId])
-	# subFeedback = relationship(Feedback, foreign_keys=[feedbackId])
-	# subUser = relationship(User, foreign_keys=[userUsername])
-	subFeedback = relationship(Feedback)
-	subUser = relationship(User)
-### END TABLES ###
+# Base = declarative_base()
 
 
 engine = create_engine('mysql://'+'metrowe:navybottle'+'@127.0.0.1:3306/'+'icwdata')
 
-Base.metadata.create_all(engine)
+Session = scoped_session(sessionmaker(bind=engine))
 
-print(engine.table_names())
+# print( dbModify.insertGuestSubmission('asdsasd','asdadsdas','animalresult maybe') )
+
+# for tbl in reversed(Base.metadata.sorted_tables):
+#     engine.execute(tbl.delete())
+
+# table.Base.metadata.drop_all(engine)
+# print('After drop all: ' + str(engine.table_names())
+# table.Base.metadata.create_all(engine)
+# print('After create all: ' + str(engine.table_names())
+
+##################################################################
+# Session = sessionmaker(bind=engine)
+
+# session = Session()
+
+# tempUser = table.User(id=1, username='temp', password='secure')
+# session.add(tempUser)
+
+# our_user = session.query(table.User).first() 
+# print(type(our_user))
+# print(our_user.id)
+# print(our_user is tempUser)
+
+#################################################################
+
+# tempSubmission = table.Submission(id=1, galleryPass=True, modApproval=False, animalLabel='turtlenotreally')
+# newImageId = 1
+# tempSubmission.originalId = newImageId
+# tempSubmission.originalImage = table.Image(id=newImageId, path='/static/etc',original=True)
+
+# newImageId = 2
+# tempSubmission.isolateId = newImageId
+# tempSubmission.isolateImage = table.Image(id=newImageId, path='/appfiles/next',original=False)
+
+
+# Session.add(tempSubmission)
+
+# our_result = Session.query(table.Image).all() 
+# print("a is b = " + str( our_result[0] is our_result[1]))
+# print("a.sub is b.sub = " + str( our_result[0].submission is our_result[1].submission))
+# print(our_result[0].submission.animalLabel)
+# print(our_result[1].submission.animalLabel)

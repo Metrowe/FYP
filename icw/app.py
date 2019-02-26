@@ -9,6 +9,13 @@ import imageClassification
 import tempConfig
 import json
 
+import database_modify as dbModify
+# import database_query as dbQuery
+from database_connection import Session
+
+
+# import data
+
 # import os
 
 abspath = os.path.abspath(__file__)
@@ -67,6 +74,12 @@ ISOLATE_IMAGES = os.path.join(STATIC_FOLDER,'images','isolate')
 activeTheme = "static/themes/theme-electricity.css"
 # activeTheme = "static/themes/theme-pastel.css"
 # activeTheme = "static/themes/theme-sunset.css"
+
+### Management ### rename section
+@app.teardown_appcontext
+def cleanup(resp_or_exc):
+    Session.remove()
+### End Management ###
 
 ### Pages ###
 @app.route('/')
@@ -148,34 +161,29 @@ def upload():
 		return None
 
 	# Constructs path for image to be saved to
-	# path = os.path.join(UPLOAD_IMAGES, file.filename)
-	# path = os.path.join(ROOT_FOLDER, UPLOAD_IMAGES, file.filename)
-	path = os.path.join(ORIGINAL_IMAGES,file.filename)
+	originalPath = os.path.join(ORIGINAL_IMAGES,file.filename)
 
-	file.save(path)
+	file.save(originalPath)
 
 
 	# newImagePath = os.path.join(UPLOAD_IMAGES, file.filename)
-	newImagePath = ''
+	# newImagePath = ''
 
 	classResult = 'test label'
 
-	# # Sets the model if not already done and attempts to classify the image
-	# setModel()
-	# global model
-	dest = os.path.join(ISOLATE_IMAGES,file.filename)
+	# TODO: change classify not to take isolate path and have seperate function for making image result
+	isolatePath = os.path.join(ISOLATE_IMAGES,file.filename)
+	classResult = imageClassification.classifyImage(originalPath,isolatePath)
 
-	classResult = imageClassification.classifyImage(path,dest)
 
-	# # Passes the image path to be processed and the destination directory path
-	# destDir = app.config['STATIC_FOLDER']
-	# newImagePath = ip.processImage(path,destDir)
-	newImagePath = os.path.join(ISOLATE_IMAGES,file.filename)
+	#Add database interaction for saving submission
+	success = dbModify.insertGuestSubmission(originalPath,isolatePath,classResult)
+	print('Success: ' + str(success))
 
 	# Renders upload page with classification info and the processed image
 	result = {
-		"inputPath": path,
-		"outputPath": newImagePath,
+		"inputPath": originalPath,
+		"outputPath": isolatePath,
 		"label": classResult
 	}
 	return jsonify(result)
