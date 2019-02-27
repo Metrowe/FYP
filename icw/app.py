@@ -10,7 +10,7 @@ import tempConfig
 import json
 
 import database_modify as dbModify
-# import database_query as dbQuery
+import database_query as dbQuery
 from database_connection import Session
 
 
@@ -90,7 +90,8 @@ def home():
     # return render_template('index.html')
 
     # return render_template('index.html',exampleImage = os.path.join(EXAMPLE_IMAGES,'deereg.jpg'))
-    return render_template('home.html',theme = activeTheme)
+    # return render_template('home.html',theme = activeTheme)
+    return render_template('home.html')
     # return render_template('home.html',theme = activeTheme,exampleImage = os.path.join(EXAMPLE_IMAGES,'deereg.jpg'))
 
 @app.route('/about')
@@ -188,6 +189,17 @@ def upload():
 	}
 	return jsonify(result)
 	# return render_template('upload.html',valid_submit = False)
+
+#TODO: Rename this
+@app.route('/galleryImages')
+def galleryImages():
+
+	#Redo to also get label
+	images = dbQuery.allGalleryImages()
+	imagePaths = [{'path': image.path} for image in images]
+
+	return jsonify(imagePaths)
+
 
 @app.route('/oldupload', methods=['GET','POST'])
 def oldupload():

@@ -30,15 +30,14 @@ engine = create_engine('mysql://'+'metrowe:navybottle'+'@127.0.0.1:3306/'+'icwda
 
 Session = scoped_session(sessionmaker(bind=engine))
 
-# print( dbModify.insertGuestSubmission('asdsasd','asdadsdas','animalresult maybe') )
+# table.Base.metadata.drop_all(engine)
+# print('After drop all: ' + str(engine.table_names()))
+# table.Base.metadata.create_all(engine)
+# print('After create all: ' + str(engine.table_names()))
 
+# print( dbModify.insertGuestSubmission('asdsasd','asdadsdas','animalresult maybe') )
 # for tbl in reversed(Base.metadata.sorted_tables):
 #     engine.execute(tbl.delete())
-
-# table.Base.metadata.drop_all(engine)
-# print('After drop all: ' + str(engine.table_names())
-# table.Base.metadata.create_all(engine)
-# print('After create all: ' + str(engine.table_names())
 
 ##################################################################
 # Session = sessionmaker(bind=engine)

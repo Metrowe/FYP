@@ -27,6 +27,18 @@ class Image(Base):
         else:
             return self.isolateLinkSub
 
+    def toDictionary(self):
+        return {
+            "id": self.id,
+            "path": self.path,
+            "original": self.original
+        }
+
+    # def __repr__(self):
+    #     return "<User(name='%s', fullname='%s', nickname='%s')>" % (self.name, self.fullname, self.nickname)
+
+
+
 class Feedback(Base):
     __tablename__ = 'feedback'
 

@@ -34,14 +34,14 @@ async function postUpload()
 	let formData = new FormData();
 	formData.append("image", document.getElementById("changeid").files[0]);
 
-	let testData = await getJsonData(url,{method: "POST", body: formData});
+	let result = await getJsonData(url,{method: "POST", body: formData});
 
-	inputImage.src = testData.inputPath;
-	outputImage.src = testData.outputPath;
-	label.textContent = testData.label;
+	inputImage.src = result.inputPath;
+	outputImage.src = result.outputPath;
+	label.textContent = result.label;
 
 	console.log(url);
-	console.log(testData);
+	console.log(result);
 }
 
 
