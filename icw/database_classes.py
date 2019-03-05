@@ -55,6 +55,10 @@ class User(Base):
     username = Column(Text,nullable=False)
     password = Column(Text,nullable=False)
 
+    def toString(self):
+        return 'id:' + str(self.id) + ', username:' + str(self.username)
+
+
 # class Submission(Base):
 # 	__tablename__ = "submission"
 

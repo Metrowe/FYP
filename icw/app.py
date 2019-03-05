@@ -9,6 +9,8 @@ import imageClassification
 import tempConfig
 import json
 
+import jwt
+
 import database_modify as dbModify
 import database_query as dbQuery
 from database_connection import Session
@@ -140,6 +142,119 @@ def divert():
 	# return json.dumps(d)
 	# return "hellotesdffsdfasfa"
 
+@app.route('/loginrequest', methods=['POST'])
+def loginrequest():
+	dbQuery.allUsers()
+
+	postArgs = dict(request.values)
+
+	print(type(postArgs['username']))
+	print(type(postArgs['password']))
+
+	print(postArgs['username'])
+	print(postArgs['password'])
+	# print(type(postArgs['notaarg']))
+
+	result = {
+		'message': 'Failed login'
+	}
+
+	if 'username' in postArgs.keys() and 'password' in postArgs.keys():
+		user = dbQuery.namePassUser(postArgs['username'],postArgs['password'])
+
+		if user == None:
+			print('Failure')
+		else:
+			print('Success')
+			print(user.toString())
+
+			token = jwt.encode({'userid': user.id}, 'secret', algorithm='HS256')
+
+			result = {
+				'token': token.decode('utf-8')
+			}
+
+			# print(jwt.encode({'userid': user.id}, 'secret', algorithm='HS256'))
+
+			# var = str(jwt.encode({'userid': user.id}, 'secret', algorithm='HS256'))
+			# print(var)
+
+			# print( jwt.decode(var, 'secret', algorithms=['HS256']) )
+
+
+
+
+	# >>> encoded_jwt = jwt.encode({'some': 'payload'}, 'secret', algorithm='HS256')
+	# >>> encoded_jwt
+	# 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb21lIjoicGF5bG9hZCJ9.4twFt5NiznN84AWoo1d7KO1T_yoc0Z6XOpOVswacPZg'
+
+	# >>> jwt.decode(encoded_jwt, 'secret', algorithms=['HS256'])
+	# {'some': 'payload'}
+	# print(request.args)
+	# print(request.form)
+	# print(request)
+	# print(request.data)
+	# print(request.values)
+
+
+	return jsonify(result)
+
+@app.route('/signuprequest', methods=['POST'])
+def signuprequest():
+	print('signuprequest entered')
+	postArgs = dict(request.values)
+
+
+	print(postArgs['username'])
+	print(postArgs['password'])
+	print(postArgs['confirmpassword'])
+
+
+	result = {
+		'message': 'Failed signup'
+	}
+
+	if 'username' in postArgs.keys() and 'password' in postArgs.keys() and 'confirmpassword' in postArgs.keys():
+		print('if 1 true')
+		if postArgs['password'] == postArgs['confirmpassword']:
+			print('if 2 true')
+			if postArgs['username'] != '' and postArgs['password'] != '' and postArgs['confirmpassword'] != '':
+				print('if 3 true')
+
+				user = dbModify.insertUser(postArgs['username'],postArgs['password'])
+
+
+
+				# print('Return after modify')
+				if user == None:
+					print('Failure')
+				else:
+					print('Success')
+					print(user.toString())
+					result = {
+						'token': jwt.encode({'userid': user.id}, 'secret', algorithm='HS256')
+					}
+
+				# if user != None:
+				# 	print(type(user))
+				# print(None)
+			else:
+				print('Some arguments are blank')
+		else:
+			print('Passwords dont match')
+	else:
+		print('Arguments missing')
+
+	# print(request.args)
+	# print(request.form)
+	# print(request)
+	# print(request.data)
+	# print(request.values)
+
+
+	return jsonify(result = {"inputPath": "originalPath," })
+
+
 ### End API ###
 
 
@@ -150,6 +265,11 @@ def divert():
 # Flask App upload
 @app.route('/upload', methods=['POST'])
 def upload():
+
+	# request.form['name']
+	# request.form.get('token')
+	# print(request.form.get('token'))
+
 
 	# Handles error if image file is not in request
 	try:
@@ -166,7 +286,6 @@ def upload():
 
 	file.save(originalPath)
 
-
 	# newImagePath = os.path.join(UPLOAD_IMAGES, file.filename)
 	# newImagePath = ''
 
@@ -179,7 +298,7 @@ def upload():
 
 	#Add database interaction for saving submission
 	success = dbModify.insertGuestSubmission(originalPath,isolatePath,classResult)
-	print('Success: ' + str(success))
+	print('DB insert: ' + str(success))
 
 	# Renders upload page with classification info and the processed image
 	result = {
@@ -204,6 +323,37 @@ def galleryImages():
 @app.route('/oldupload', methods=['GET','POST'])
 def oldupload():
 	print('called oldupload')
+
+
+# @app.route('/ggggg',methods=['POST'])
+# def ggggg():
+
+# 	temp = {'path': image.path}
+
+# 	console.log('ooooooooo')
+
+# 	return jsonify(temp)
+
+@app.route('/ggggg', methods=['POST'])
+def ggggg():
+	postArgs = dict(request.values)
+
+	result = {
+		'message': 'Failed token validation'
+	}
+
+	if 'token' in postArgs.keys():
+		token = postArgs['token']
+
+		payload = jwt.decode(token.encode('utf-8'), 'secret', algorithms=['HS256'])
+
+		print(payload)
+
+		result = {
+			'message': 'Token validated'			
+		}
+
+	return jsonify(result)
 
 # # Renders a page with a file upload
 # @app.route('/oldupload', methods=['GET','POST'])

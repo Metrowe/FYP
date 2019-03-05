@@ -1,4 +1,5 @@
-
+console.log(window.location.pathname)
+console.log(window.location.href)
 //If no options set as null
 async function getJsonData(url, options)
 {
@@ -33,6 +34,7 @@ async function postUpload()
 
 	let formData = new FormData();
 	formData.append("image", document.getElementById("changeid").files[0]);
+	formData.append("token", "placeholderToken");
 
 	let result = await getJsonData(url,{method: "POST", body: formData});
 
@@ -59,3 +61,6 @@ async function testget()
 // window.location = "https://www.example.com";
 console.log("ssadasdsasdasdsasdsasd");
 testget();
+
+// sessionStorage.accessToken = "placeholderToken";
+// sessionStorage.temp = "canThisBeAccessed";

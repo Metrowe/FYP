@@ -32,15 +32,15 @@
 		<br>
 		<!-- Different after this point -->
 		<div class="container  w-50 theme-colour-c">
-			<form>
+			<!-- <form> -->
 
 				<h3 class="text-center">Signup</h3>
-				<div class="row  rounded ">
+				<div class="row rounded ">
 					<div class="col-sm-4 ">
 						<p>Username: </p>
 					</div>
 					<div class="col-sm-8 ">
-						<input class="w-100" type="text" name="textUsername" value="" >
+						<input id="signup-username" class="w-100" type="text" value="" >
 					</div>
 				</div>
 
@@ -49,7 +49,7 @@
 						<p>Password: </p>
 					</div>
 					<div class="col-sm-8 ">
-						<input class="w-100" type="password" name="textPassword" value="" >
+						<input id="signup-password" class="w-100" type="password" value="" >
 					</div>
 				</div>
 
@@ -58,17 +58,18 @@
 						<p>Confirm Password: </p>
 					</div>
 					<div class="col-sm-8 ">
-						<input class="w-100" type="password" name="textConfirm" value="" >
+						<input id="signup-confirmpassword" class="w-100" type="password" value="" >
 					</div>
 				</div>
 
 				<div class="row ">
 					<div class="col-sm-12 ">
-						<input style="margin:1%" type="submit" class="btn btn-primary btn-lg btn-block" value="Signup">
+						<input onclick="signupAttempt();" style="margin:1%" type="submit" class="btn btn-primary btn-lg btn-block" value="Signup">
 					</div>
 				</div>
-			</form>
+			<!-- </form> -->
 		</div>
 	</body>
+	<script src="static/clientCode/assistMethods.js"></script>
 	<script src="static/clientCode/clientSignup.js"></script>
 </html>

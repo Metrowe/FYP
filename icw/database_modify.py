@@ -76,4 +76,26 @@ def insertGuestSubmission(originalPath,isolatePath,classResult):
 	print('Animal label: ' + str(our_result.submission.animalLabel))
 
 	return True
+
+def insertUser(username,password):
+	newUser = None
+
+	existingUser = dbQuery.nameUser(username)
+
+	if existingUser == None:
+		newUser = table.User(username=username,password=password)
+		print('after new user')
+
+		Session.add(newUser)
+		Session.commit()
+		print('add')
+		# print('comit')
+
+
+		dbQuery.allUsers()
+		# print('afterquery')
+	else:
+		print('user already exists')
+
+	return newUser
 #####################################################

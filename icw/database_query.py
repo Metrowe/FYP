@@ -19,7 +19,17 @@ from database_connection import Session
 
 
 # print( dbModify.insertGuestSubmission('asdsasd','asdadsdas','animalresult maybe') )
+def namePassUser(username,password):
+	user = Session.query(table.User)\
+	.filter(table.User.username==username).first()
 
+	return user
+
+def nameUser(username):
+	user = Session.query(table.User)\
+	.filter(table.User.username==username).first()
+
+	return user
 
 def allImages():
 	images = Session.query(table.Image).all() 
@@ -37,6 +47,14 @@ def allSubmissions():
 		print('submissionId = ' + str(s.id))
 
 	return submissions
+
+def allUsers():
+	users = Session.query(table.User).all() 
+	
+	for u in users:
+		print('userid = ' + str(u.id) + ' username = ' + str(u.username))
+
+	return users
 
 
 #Rename

@@ -1,32 +1,10 @@
-
-
-//If no options set as null
-async function getJsonData(url, options)
-{
-	var returnData = null
-	await fetch(url, options)
-	.then((resp) => resp.json())
-	.then(function(data) 
-	{
-		returnData = data;
-		
-	})
-	.catch(function(error) 
-	{
-		console.log(error);
-	}); 
-
-	return returnData;
-}
-
 async function initialGalleryContents()
 {
 	let row = document.getElementById("galleryRow");
 
 	//prepare get jsondata
 	// url = window.location.href + "galleryImages";
-	url = "http://127.0.0.1:5000/" + "galleryImages";
-
+	url = getBaseUrl() + "galleryImages";
 
 	let results = await getJsonData(url,null);
 
