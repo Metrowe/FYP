@@ -61,14 +61,19 @@ def classifyImage(imagePath,destpath):
 	# theModel = getWeightedModel()
 	# Gets the image from the path and formats it to be the same as the training data
 	original = cv2.imread(imagePath)
-	finalImage = modelConfiguration.formatImage(original)
 
-	cv2.imwrite(destpath,finalImage)
+	formattedImage = modelConfiguration.formatImage(original)
 
-	# Generates the predictions for the specified image
-	prediction = theModel.predict(np.array( [finalImage,] ) )
-	# Finds the highest probability prediction and returns the corresponding label
-	result = modelConfiguration.class_names[np.argmax(prediction[0])]
+	# TODO: Remove this line when isolate added back in
+	cv2.imwrite(destpath,formattedImage)
+
+	try:
+		# Generates the predictions for the specified image
+		prediction = theModel.predict(np.array( [formattedImage,] ) )
+		# Finds the highest probability prediction and returns the corresponding label
+		result = modelConfiguration.class_names[np.argmax(prediction[0])]
+	except:
+		result = 'Failed Classification'
 
 	return result
 

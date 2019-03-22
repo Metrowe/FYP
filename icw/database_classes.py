@@ -54,6 +54,7 @@ class User(Base):
     id = Column(Integer, primary_key=True)
     username = Column(Text,nullable=False)
     password = Column(Text,nullable=False)
+    admin = Column(Boolean,nullable=False)
 
     def toString(self):
         return 'id:' + str(self.id) + ', username:' + str(self.username)
@@ -82,8 +83,9 @@ class Submission(Base):
     __tablename__ = 'submission'
 
     id = Column(Integer, primary_key=True)
-    galleryPass = Column(Boolean,nullable=False)
+    userPermission = Column(Boolean,nullable=False)
     modApproval = Column(Boolean,nullable=False)
+    modReviewed = Column(Boolean,nullable=False)
     animalLabel = Column(Text,nullable=False)
 
 

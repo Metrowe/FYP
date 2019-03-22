@@ -1,101 +1,138 @@
-from sqlalchemy.orm import sessionmaker
+# from sqlalchemy import Integer, String, Boolean, Text
+# from sqlalchemy import Column, ForeignKey
+# from sqlalchemy.ext.declarative import declarative_base
+# from sqlalchemy.orm import relationship
+# from sqlalchemy import create_engine
+# from sqlalchemy.orm import sessionmaker
+# from sqlalchemy import func
 
-from sqlalchemy import Integer, String, Boolean, Text
-from sqlalchemy import Column, ForeignKey
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy import func
-
-
+# Custom database imports
+from database_connection import Session
 import database_classes as table
-
 import database_query as dbQuery
 
-from database_connection import Session
+# Generic imports
+import os_fileManagement as fileManagement
 
+### START ERROR PREVENTION ###
+def safeCommit():
+	success = False
+	try:
+		Session.commit()
+		success = True
+	except Exception as e:
+		print('Exception:', e)
+		Session.rollback()
+		Session.flush()
+		success = False
+### END ERROR PREVENTION ###
 
-# max_id = session.query(func.max(Table.column)).scalar()
-
-###################################################
-# Session = sessionmaker(bind=engine)
-
-# session = Session()
-
-# tempUser = table.User(id=1, username='temp', password='secure')
-# session.add(tempUser)
-# our_user = session.query(table.User).first() 
-# print(type(our_user))
-# print(our_user.id)
-# print(our_user is tempUser)
-
-def insertGuestSubmission(originalPath,isolatePath,classResult):
-	#need to find a way of managing ids
-	# nextSubmissionId = 1
-	# newSubmission = table.Submission(id=nextSubmissionId, galleryPass=True, modApproval=False, animalLabel=classResult)
-
-	# TODO: make a mod approval page so that modapproval can be turned off by default for all submissions and activated after approval
-	newSubmission = table.Submission(galleryPass=True, modApproval=True, animalLabel=classResult)
-	# newSubmission = table.Submission(galleryPass=True, modApproval=False, animalLabel=classResult)
-
-	newSubmission.originalImage = table.Image(path=originalPath,original=True)
-	newSubmission.isolateImage = table.Image(path=isolatePath,original=False)
-
-	# print('key = ' + str(newSubmission.id))
-	
-	# TODO: fix id issue
-	# nextImageId = 1
-	# newSubmission.originalId = nextImageId
-	# newSubmission.originalImage = table.Image(id=nextImageId, path=originalPath,original=True)
-
-	# TODO: fix id issue
-	# nextImageId = 2
-	# newSubmission.isolateId = nextImageId
-	# newSubmission.isolateImage = table.Image(id=nextImageId, path=isolatePath,original=False)
-
-
-	Session.add(newSubmission)
-	# print('key = ' + str(newSubmission.id))
-
-
-	Session.commit()
-
-	print('key = ' + str(newSubmission.id))
-	print('image1 key = ' + str(newSubmission.originalImage.id))
-	print('image2 key = ' + str(newSubmission.isolateImage.id))
-	
-
-	dbQuery.allImages()
-	dbQuery.allSubmissions()
-
-
-
-
-	our_result = Session.query(table.Image).first() 
-	print('Animal label: ' + str(our_result.submission.animalLabel))
-
-	return True
-
+### START INSERTS ###
 def insertUser(username,password):
 	newUser = None
-
 	existingUser = dbQuery.nameUser(username)
 
 	if existingUser == None:
-		newUser = table.User(username=username,password=password)
-		print('after new user')
-
+		newUser = table.User(username=username,password=password,admin=False)
 		Session.add(newUser)
-		Session.commit()
-		print('add')
-		# print('comit')
+		success = safeCommit()
 
-
-		dbQuery.allUsers()
-		# print('afterquery')
-	else:
-		print('user already exists')
+		if not success:
+			newUser = None
 
 	return newUser
-#####################################################
+
+def insertAdmin(username,password):
+	newUser = None
+	existingUser = dbQuery.nameUser(username)
+
+	if existingUser == None:
+		newUser = table.User(username=username,password=password,admin=True)
+		Session.add(newUser)
+		safeCommit()
+	else:
+		newUser = None
+
+	return newUser
+
+def insertGuestSubmission(originalPath,isolatePath,classResult,userPermission):
+	newSubmission = table.Submission(userPermission=userPermission, modApproval=False, modReviewed=False, animalLabel=classResult)
+	newSubmission.originalImage = table.Image(path=originalPath,original=True)
+	newSubmission.isolateImage = table.Image(path=isolatePath,original=False)
+
+	Session.add(newSubmission)
+	success = safeCommit()
+
+	newSubmissionId = None
+	if success:
+		newSubmissionId = newSubmission.id
+
+	return newSubmissionId
+
+def insertUserSubmission(originalPath,isolatePath,classResult,userId,userPermission):
+	newSubmission = table.Submission(userPermission=userPermission, modApproval=False, modReviewed=False, animalLabel=classResult,userId=userId)
+	newSubmission.originalImage = table.Image(path=originalPath,original=True)
+	newSubmission.isolateImage = table.Image(path=isolatePath,original=False)
+
+	Session.add(newSubmission)
+	success = safeCommit()
+
+	newSubmissionId = None
+	if success:
+		newSubmissionId = newSubmission.id
+
+	return newSubmissionId
+### END INSERTS ###
+
+### START UPDATES ###
+def updateFeedback(submissionId,rateClassify,rateIsolate,commentResult,commentSite):
+	submission = dbQuery.idSubmission(submissionId)
+
+	if submission != None:
+		submission.subFeedback = table.Feedback(rateClassify=rateClassify,rateIsolate=rateIsolate,commentResult=commentResult,commentSite=commentSite)
+
+		Session.add(submission)
+		success = safeCommit()
+
+		if not success:
+			submission = None
+
+	return submission
+
+def updateModApproval(submissionId,approval):
+	submission = dbQuery.idSubmission(submissionId)
+
+	if submission != None:
+		submission.modApproval = approval
+		submission.modReviewed = True
+
+		Session.add(submission)
+		success = safeCommit()
+
+		if not success:
+			submission = None
+
+	return submission
+### END UPDATES ###
+
+### START DELETES ###
+def deleteSubmission(submissionId):
+	submission = dbQuery.idSubmission(submissionId)
+
+	if submission != None:
+		if submission.originalImage != None:
+			fileManagement.deleteFile(submission.originalImage.path)
+			Session.delete(submission.originalImage)
+		if submission.isolateImage != None:
+			fileManagement.deleteFile(submission.isolateImage.path)
+			Session.delete(submission.isolateImage)
+		if submission.subFeedback != None:
+			Session.delete(submission.subFeedback)
+
+		Session.delete(submission)
+		success = safeCommit()
+	else:
+		success = False
+
+	return success
+### END DELETES ###

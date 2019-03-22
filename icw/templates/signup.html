@@ -1,75 +1,98 @@
 <!DOCTYPE html>
 <html>
+	<!-- ##### SHARED HTML START ##### -->
 	<head>
 		<title>Isolate & Classify Wildlife</title>
-			<meta charset="utf-8">
-			<meta name="viewport" content="width=device-width, initial-scale=1">
-			<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
 
-	
-  			<!-- <link rel="stylesheet" href="static/themes/theme-blank.css"> -->
-
-  			<link rel="stylesheet" href="static/themes/theme-electricity.css">
-  			<!-- <link rel="stylesheet" href="static/themes/theme-pastel.css"> -->
-  			<!-- <link rel="stylesheet" href="static/themes/theme-sunset.css"> -->
-  			<!-- <link rel="stylesheet" href="static/themes/theme-dark.css"> -->
-
+		<link id="style-theme" rel="stylesheet" href="static/themes/theme-blank.css">
+		<link rel="stylesheet" href="static/themes/page-layout.css">
 	</head>
+	<!-- ##### SHARED HTML END ##### -->
 	<body class="theme-colour-a h-100 w-100">
-	<!-- <body> -->
-		<nav class="navbar navbar-expand  theme-colour-b">
-			<a class="navbar-brand link-active" href="">Isolate & Classify Wildlife</a>
-			<div class="collapse navbar-collapse">
-				<div class="navbar-nav">
-					<a class="nav-item nav-link link-inactive " href="/">Home </a>
-					<a class="nav-item nav-link link-inactive " href="/gallery">Gallery</a>
-					<a class="nav-item nav-link link-inactive " href="/about">About</a>
-					<a class="nav-item nav-link link-inactive" href="/login">Login</a>
-					<a class="nav-item nav-link link-active" href="/signup">Signup</a>
+		<div id="page">
+			<div id="body">
+				<nav class="navbar navbar-expand-sm  theme-colour-b">
+					<a class="navbar-brand link-active" href="">Isolate & Classify Wildlife</a>
+					<div class="navbar-nav">
+						<a class="nav-item nav-link link-inactive " href="/">Home </a>
+						<a class="nav-item nav-link link-inactive " href="/gallery">Gallery</a>
+						<a id="nav-myuploads" class="nav-item nav-link link-inactive " style="display:none;" href="/myuploads">My Uploads</a>
+						<a class="nav-item nav-link link-active " href="/about">About</a>
+					</div>
+					<div class="navbar-nav ml-auto">
+						<a id="nav-login" class="nav-item nav-link link-inactive " style="display:block;" href="/login">Login</a>
+						<a id="nav-signup" class="nav-item nav-link link-inactive " style="display:block;" href="/signup">Signup</a>
+						<a onclick="logout();"  id="nav-logout" class="nav-item nav-link link-inactive " style="display:none;" href="#">Logout</a>
+					</div>
+				</nav>
+				<br>
+				<!-- Different after this point -->
+				<div class="container w-50 theme-colour-c">
+					<!-- <form> -->
+
+						<h3 class="text-center">Signup</h3>
+						<div class="row rounded ">
+							<div class="col-sm-4 ">
+								<p>Username: </p>
+							</div>
+							<div class="col-sm-8 ">
+								<input id="signup-username" class="w-100" type="text" value="" >
+							</div>
+						</div>
+
+						<div class="row  rounded ">
+							<div class="col-sm-4 ">
+								<p>Password: </p>
+							</div>
+							<div class="col-sm-8 ">
+								<input id="signup-password" class="w-100" type="password" value="" >
+							</div>
+						</div>
+
+						<div class="row  rounded ">
+							<div class="col-sm-4 ">
+								<p>Confirm Password: </p>
+							</div>
+							<div class="col-sm-8 ">
+								<input id="signup-confirmpassword" class="w-100" type="password" value="" >
+							</div>
+						</div>
+
+						<div class="row ">
+							<div class="col-sm-12 ">
+								<input onclick="signupAttempt();" style="margin:1%" type="submit" class="btn btn-primary btn-lg btn-block" value="Signup">
+							</div>
+						</div>
+					<!-- </form> -->
 				</div>
+
+				<!-- ##### ERROR START ##### -->
+				<br>
+				<div id="error-display" class="container w-50 p-3 text-center bg-danger text-white " style="display:none;"></div>
+				<br>
+				<!-- ##### ERROR START ##### -->
 			</div>
-		</nav>
-		<br>
-		<!-- Different after this point -->
-		<div class="container  w-50 theme-colour-c">
-			<!-- <form> -->
-
-				<h3 class="text-center">Signup</h3>
-				<div class="row rounded ">
-					<div class="col-sm-4 ">
-						<p>Username: </p>
+			<div id="footer">
+				<!-- ##### SHARED HTML START ##### -->
+				<nav class="navbar navbar-expand-sm theme-colour-b">
+					<div class="navbar-nav ml-auto">
+						<a onclick="setTheme('dark');" class="nav-item nav-link link-inactive " href="#">Dark</a>
+						<a onclick="setTheme('sunset');" class="nav-item nav-link link-inactive " href="#">Sunset</a>
+						<a onclick="setTheme('electricity');" class="nav-item nav-link link-inactive " href="#">Electricity</a>
+						<a onclick="setTheme('pastel');" class="nav-item nav-link link-inactive " href="#">Pastel</a>
 					</div>
-					<div class="col-sm-8 ">
-						<input id="signup-username" class="w-100" type="text" value="" >
-					</div>
-				</div>
-
-				<div class="row  rounded ">
-					<div class="col-sm-4 ">
-						<p>Password: </p>
-					</div>
-					<div class="col-sm-8 ">
-						<input id="signup-password" class="w-100" type="password" value="" >
-					</div>
-				</div>
-
-				<div class="row  rounded ">
-					<div class="col-sm-4 ">
-						<p>Confirm Password: </p>
-					</div>
-					<div class="col-sm-8 ">
-						<input id="signup-confirmpassword" class="w-100" type="password" value="" >
-					</div>
-				</div>
-
-				<div class="row ">
-					<div class="col-sm-12 ">
-						<input onclick="signupAttempt();" style="margin:1%" type="submit" class="btn btn-primary btn-lg btn-block" value="Signup">
-					</div>
-				</div>
-			<!-- </form> -->
+				</nav>
+				<!-- ##### SHARED HTML END ##### -->
+			</div>
 		</div>
 	</body>
-	<script src="static/clientCode/assistMethods.js"></script>
+	<!-- ##### SHARED HTML START ##### -->
+	<script src="static/clientCode/themeMethods.js"></script>
+	<script src="static/clientCode/assistMethods.js"></script>	
+	<!-- ##### SHARED HTML END ##### -->
 	<script src="static/clientCode/clientSignup.js"></script>
 </html>

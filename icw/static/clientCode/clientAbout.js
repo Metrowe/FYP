@@ -16,10 +16,18 @@ async function validateTokenExample()
 	let formData = new FormData();
 	formData.append('token', getToken());
 
-	let result = await getJsonData(url,{method: "POST", body: formData});
+	let headers = { 'Authorization': getToken() };
+
+	let result = await getJsonData(url,{method: 'POST', headers: headers, body: formData});
 
 	console.log(url);
 	console.log(result);
 }
 
 validateTokenExample();
+
+
+// fetch('www.example.net', {
+//   method: 'POST',
+//   headers: { 'Authorization': 'Bearer ' + token }
+// });

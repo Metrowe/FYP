@@ -35,6 +35,26 @@ Session = scoped_session(sessionmaker(bind=engine))
 # table.Base.metadata.create_all(engine)
 # print('After create all: ' + str(engine.table_names()))
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # print( dbModify.insertGuestSubmission('asdsasd','asdadsdas','animalresult maybe') )
 # for tbl in reversed(Base.metadata.sorted_tables):
 #     engine.execute(tbl.delete())

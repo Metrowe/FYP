@@ -1,4 +1,4 @@
-.theme-base
+/*.theme-base
 {
 	
 }
@@ -26,4 +26,54 @@
 .theme-colour-e
 {
 
+}*/
+
+.theme-base
+{
+	background-color:Black;
+	color:Black;
+}
+
+.theme-colour-a
+{
+	background-color:Black;
+	color:Black;
+}
+
+.theme-colour-b
+{
+	background-color:Black;
+	color:Black;
+}
+
+.theme-colour-c
+{
+	background-color:Black;
+	color:Black;
+}
+
+.theme-colour-d
+{
+	background-color:Black;
+	color:Black;
+}
+
+.theme-colour-e
+{
+	background-color:Black;
+	color:Black;
+}
+
+.link-active
+{
+	color:Black;
+}
+
+.link-inactive
+{
+	color:Black;
+}
+
+a:hover, a:active {
+  color:Black;
 }

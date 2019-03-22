@@ -26,7 +26,7 @@
 						<a class="nav-item nav-link link-inactive " href="/">Home </a>
 						<a class="nav-item nav-link link-inactive " href="/gallery">Gallery</a>
 						<a id="nav-myuploads" class="nav-item nav-link link-inactive " style="display:none;" href="/myuploads">My Uploads</a>
-						<a class="nav-item nav-link link-active " href="/about">About</a>
+						<a class="nav-item nav-link link-inactive " href="/about">About</a>
 					</div>
 					<div class="navbar-nav ml-auto">
 						<a id="nav-login" class="nav-item nav-link link-inactive " style="display:block;" href="/login">Login</a>
@@ -38,26 +38,22 @@
 				<!-- ##### SHARED HTML END ##### -->
 
 				<!-- Different after this point -->
-				<div class="container d-flex justify-content-between">
+				<h2  class="text-center">Admin Approval</h2>
 
-					<div class="row">
-						<div  class="col-md-9 theme-colour-b">
-							<h2  class="text-center">About this Website</h2>
-					
-							<p style="margin:1%">This website is focused on providing users the ability to </p> 
-							<p style="margin:1%">Bootstrap is the most popular HTML, CSS, and JS framework for developing responsive, mobile-first projects on the web.</p> 
-						</div>
-						<!-- Submit and question box -->
-						<div class="col-md-3 theme-colour-c">
-							<img style="padding:5px" class=" rounded " src="static/images/examples/buffalo-example.jpg" alt="Display Image" width="100%">
-							<br>
-							<img style="padding:5px" class=" rounded " src="static/images/examples/dolphin-example.jpg" alt="Display Image" width="100%">
-							<br>
-							<img style="padding:5px" class=" rounded " src="static/images/examples/polar+bear-example.jpg" alt="Display Image" width="100%">
-						</div>
+				<!-- ##### ERROR START ##### -->
+				<br>
+				<div id="error-display" class="container w-50 p-3 text-center bg-danger text-white " style="display:none;"></div>
+				<br>
+				<!-- ##### ERROR START ##### -->
+				
+				<!-- <div class="container d-flex justify-content-between" style="padding: 20px"> -->
+				<div class="container d-flex justify-content-between" style="padding: 20px">
+
+
+
+ 					<div id="adminRow" class="row"  ><!-- style="padding: 10px" -->
 
 					</div>
-
 				</div>
 			</div>
 			<div id="footer">
@@ -78,5 +74,5 @@
 	<script src="static/clientCode/themeMethods.js"></script>
 	<script src="static/clientCode/assistMethods.js"></script>	
 	<!-- ##### SHARED HTML END ##### -->
-	<script src="static/clientCode/clientAbout.js"></script>
+	<script src="static/clientCode/clientAdminapproval.js"></script>
 </html>

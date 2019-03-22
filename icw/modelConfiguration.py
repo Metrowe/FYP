@@ -8,8 +8,9 @@ class_names = ['antelope','bat','beaver','blue+whale','bobcat','buffalo','chihua
 
 def createModel():
 	model = keras.models.Sequential()
+	model.add(keras.layers.Conv2D(filters=16,kernel_size=2,padding="same",activation="relu",input_shape=(200, 200, 3)))
 	# model.add(keras.layers.Conv2D(filters=16,kernel_size=2,padding="same",activation="relu",input_shape=(100, 100, 3)))
-	model.add(keras.layers.Conv2D(filters=16,kernel_size=2,padding="same",activation="relu",input_shape=(50, 50, 3)))
+	# model.add(keras.layers.Conv2D(filters=16,kernel_size=2,padding="same",activation="relu",input_shape=(50, 50, 3)))
 	# model.add(keras.layers.Conv2D(filters=16,kernel_size=2,padding="same",activation="relu",input_shape=(32, 32, 3)))
 	model.add(keras.layers.MaxPooling2D(pool_size=2))
 	model.add(keras.layers.Conv2D(filters=32,kernel_size=2,padding="same",activation="relu"))
@@ -50,8 +51,11 @@ def makeSquare(image,padColour):
 
 # def formatImage(image,padColour,finalSize):
 def formatImage(image):
-	finalSize = 50
+	finalSize = 200
 	padColour = [0,0,0]
+
+
+	image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
 	padded = makeSquare(image,padColour)
 	resized = cv2.resize(padded,(finalSize,finalSize))

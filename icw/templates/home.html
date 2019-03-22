@@ -1,177 +1,161 @@
 <!DOCTYPE html>
 <html>
+	<!-- ##### SHARED HTML START ##### -->
 	<head>
 		<title>Isolate & Classify Wildlife</title>
-			<meta charset="utf-8">
-			<meta name="viewport" content="width=device-width, initial-scale=1">
-			<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
 
-			<!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script> -->
-			<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script> -->
-	<!-- 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> -->
-	
-
-  			<!-- <link rel="stylesheet" href="static/themes/theme-blank.css"> -->
-
-  			<!-- <link rel="stylesheet" href="static/themes/theme-electricity.css"> -->
-  			<!-- <link rel="stylesheet" href="static/themes/theme-pastel.css"> -->
-  			<!-- <link rel="stylesheet" href="static/themes/theme-sunset.css"> -->
-  			<link rel="stylesheet" href="static/themes/theme-dark.css">
+		<link id="style-theme" rel="stylesheet" href="static/themes/theme-blank.css">
+		<link rel="stylesheet" href="static/themes/page-layout.css">
 	</head>
+	<!-- ##### SHARED HTML END ##### -->
 	<body class="theme-colour-a">
-	<!-- <body> -->
-		<nav class="navbar navbar-expand  theme-colour-b">
-			<a class="navbar-brand link-active" href="">Isolate & Classify Wildlife</a>
-			<div class="collapse navbar-collapse">
-				<div class="navbar-nav">
-					<a class="nav-item nav-link link-active " href="/">Home </a>
-					<a class="nav-item nav-link link-inactive " href="/gallery">Gallery</a>
-					<a class="nav-item nav-link link-inactive " href="/about">About</a>
-					<a class="nav-item nav-link link-inactive" href="/login">Login</a>
-					<a class="nav-item nav-link link-inactive" href="/signup">Signup</a>
+		<div id="page">
+			<div id="body">
+				<nav class="navbar navbar-expand-sm  theme-colour-b">
+					<a class="navbar-brand link-active" href="">Isolate & Classify Wildlife</a>
+					<div class="navbar-nav">
+						<a class="nav-item nav-link link-active " href="/">Home </a>
+						<a class="nav-item nav-link link-inactive " href="/gallery">Gallery</a>
+						<a id="nav-myuploads" class="nav-item nav-link link-inactive " style="display:none;" href="/myuploads">My Uploads</a>
+						<a class="nav-item nav-link link-inactive " href="/about">About</a>
+					</div>
+					<div class="navbar-nav ml-auto">
+						<a id="nav-login" class="nav-item nav-link link-inactive " style="display:block;" href="/login">Login</a>
+						<a id="nav-signup" class="nav-item nav-link link-inactive " style="display:block;" href="/signup">Signup</a>
+						<a onclick="logout();"  id="nav-logout" class="nav-item nav-link link-inactive " style="display:none;" href="#">Logout</a>
+					</div>
+				</nav>
+				<br>
+
+		 		<div class="container d-flex justify-content-between" style="display:block;">
+					<div class="row">
+						<!-- Example and result box -->
+						<div class="col-sm-6 theme-colour-b">
+							<div class="text-center">Example</div>
+							<div class="row">
+								<div class="col">
+									<div class="text-center">Uploaded Image</div>
+									<img id="upload-input" class="img-responsive border rounded mx-auto d-block" src="static/images/examples/antelope-input-example.jpg" alt="loading..." width="100%">
+								</div>
+								<div class="col">
+									<div class="text-center">Result</div>
+									<img id="upload-output" class="img-responsive border rounded mx-auto d-block" src="static/images/examples/antelope-output-example.jpg" alt="loading..." width="100%">
+									<div class="text-center">Animal: <div id="upload-label">Antelope</div></div>
+								</div>
+							</div>
+							<p>Bootstrap is the most popular HTML, CSS, and JS framework for developing responsive, mobile-first projects on the web.</p> 
+						</div>
+						<!-- Submit and question box -->
+						<div class="col-sm-6 theme-colour-c">
+							<input id="changeid" type="file" class="btn btn-primary btn-lg btn-block" value="Submit">
+							<input onclick="uploadAttempt();" type="button" class="btn btn-primary btn-lg btn-block" value="Upload">
+
+							<div class="row">
+								<div class="col-sm-8 ">
+									<p>Can your uploaded image be added to the icwildlife gallery? (Images are filtered before being added to gallery)</p>
+								</div>
+								<div class="col-sm-4 text-center">
+									<input type="radio" name="galleryPass" value="yes" checked> Yes<br>
+									<input type="radio" name="galleryPass" value="no"> No
+								</div>
+							</div>
+						</div>
+					</div>
+
 				</div>
+
+				<br>
+				<!-- This div/section isn't included if an image hasn't been successfully submitted -->
+				<div id='feedback-form' class="container " style="display:none;">
+
+					<h3 class="text-center">Feedback Form</h3>
+					<font color="red">*Required fields</font>
+
+					<!-- First feedback row -->
+					<div class="row border rounded theme-colour-b ">
+						<div class="col-sm-6 ">
+							<p><font color="red">*</font>Was the image labelled correctly?</p>
+						</div>
+						<div class="col-sm-6 ">
+							<input id='feedback-rateclass1' type="radio" name="rateClassify" value="yes"> Yes<br>
+		 					<input id='feedback-rateclass2' type="radio" name="rateClassify" value="no"> No
+						</div>
+					</div>
+					<br>
+					<!-- Second feedback row -->
+					<div class="row border rounded theme-colour-b ">
+						<div class="col-sm-6 ">
+							<p><font color="red">*</font>How effective was the background removal?</p>
+						</div>
+						<div class="col-sm-6 ">
+							<input id='feedback-rateisolate1' type="radio" name="rateIsolate" value="perfect"> Perfect<br>
+							<input id='feedback-rateisolate2' type="radio" name="rateIsolate" value="good"> Good<br>
+							<input id='feedback-rateisolate3' type="radio" name="rateIsolate" value="poor"> Poor<br>
+							<input id='feedback-rateisolate4' type="radio" name="rateIsolate" value="failure"> Failure
+						</div>
+					</div>
+					<br>
+					<!-- Third feedback row -->
+					<div class="row border rounded theme-colour-b ">
+						<div class="col-sm-12 ">
+							<p>  Any comments on the labeling or background removal of the reult image?</p>
+						</div>
+						<div class="col-sm-12 ">
+							<input id='feedback-resultcomment' style="margin:1%" class=" w-100 " type="text" name="commentResult" value="">
+						</div>
+					</div>
+					<br>
+					<!-- Fourth feedback row -->
+					<div class="row border rounded theme-colour-b ">
+						<div class="col-sm-8 ">
+							<p>  Comments or suggestions for this website?</p>
+							<input id='feedback-sitecomment' style="margin:1%" class=" w-100 " type="text" name="commentSite" value="">
+						</div>
+						
+						<div class="col-sm-4">
+							  <!-- <input  type="submit" class="btn btn-primary btn-lg btn-block h-100 " value="Submit"> -->
+							  <input onclick="feedbackAttempt();" type="button" class="btn btn-primary btn-lg btn-block " value="Submit">
+						</div>
+
+					</div>
+				</div>
+				<br>
+
+				<!-- ##### ERROR START ##### -->
+				<div id="error-display" class="container w-50 p-3 text-center bg-danger text-white " style="display:none;"></div>
+				<!-- ##### ERROR START ##### -->
+
+				<!-- ##### MESSAGE START ##### -->
+				<div id="message-display" class="container w-50 p-3 text-center bg-success text-white " style="display:none;"></div>
+				<!-- ##### MESSAGE START ##### -->
+
+				<!-- <br><br><br><br><br><br> -->
+
 			</div>
-		</nav>
-		<br>
-
-
-
-		<!-- <ul class="nav nav-pills justify-content-center"">
 
 			
-			<li class="nav-item">
-				<div class="navbar-brand">Isolate & Classify Wildlife</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link theme-colour-b" href="/">Home</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link theme-colour-c" href="/gallery">Gallery</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link theme-colour-c" href="/about">About</a>
-			</li>
-		</ul> -->
-
-		<!-- <title>Isolate & Classify Wildlife</title>
-		<a class="theme-colour-a" href="/">Upload</a>
-		<a class="theme-colour-b" href="/gallery">Gallery</a>
-		<a class="theme-colour-c" href="/about">About</a>
-		<a class="theme-colour-d" href="/login">Login</a>
-		<a class="theme-colour-e" href="/logout">Logout</a>
-		<a class="theme-colour-e" href="/test">test</a>
-		<br>
- -->
- 		<div class="container d-flex justify-content-between">
-
-			<div class="row">
-				<!-- Example and result box -->
-				<div class="col-sm-6 theme-colour-b">
-					<div class="text-center">Example</div>
-					<div class="row">
-						<div class="col">
-							<div class="text-center">Uploaded Image</div>
-							<img id="upload-input" class="img-responsive border rounded mx-auto d-block" src="static/images/examples/antelope-input-example.jpg" alt="loading..." width="100%">
-						</div>
-						<div class="col">
-							<div class="text-center">Result</div>
-							<img id="upload-output" class="img-responsive border rounded mx-auto d-block" src="static/images/examples/antelope-output-example.jpg" alt="loading..." width="100%">
-							<div class="text-center">Animal: <div id="upload-label">Antelope</div></div>
-						</div>
+			
+			<div id="footer">
+				
+				<nav class="navbar navbar-expand  theme-colour-b">
+					<div class="navbar-nav ml-auto">
+						<a onclick="setTheme('dark');" class="nav-item nav-link link-inactive " href="#">Dark</a>
+						<a onclick="setTheme('sunset');" class="nav-item nav-link link-inactive " href="#">Sunset</a>
+						<a onclick="setTheme('electricity');" class="nav-item nav-link link-inactive " href="#">Electricity</a>
+						<a onclick="setTheme('pastel');" class="nav-item nav-link link-inactive " href="#">Pastel</a>
 					</div>
-					<p>Bootstrap is the most popular HTML, CSS, and JS framework for developing responsive, mobile-first projects on the web.</p> 
-				</div>
-				<!-- Submit and question box -->
-				<div class="col-sm-6 theme-colour-c">
-					<!-- <form action="postUpload()"> -->
-					<form>
-						<!-- <input type="submit" class="btn btn-primary btn-lg btn-block" value="Submit"> -->
-						<input id="changeid" type="file" class="btn btn-primary btn-lg btn-block" value="Submit">
-						<input onclick="postUpload();" type="button" class="btn btn-primary btn-lg btn-block" value="Submit">
-
-						<div class="row">
-							<div class="col-sm-8 ">
-								<p>Can your uploaded image be added to the icwildlife gallery? (Images are filtered before being added to gallery)</p>
-							</div>
-							<div class="col-sm-4 text-center">
-								<input type="radio" name="galleryPass" value="yes" checked> Yes<br>
-								<input type="radio" name="galleryPass" value="no"> No
-							</div>
-						</div>
-					</form>
-				</div>
+				</nav> 
+				
 			</div>
-
 		</div>
-
-		<!--  -->
-		<!-- <form action="/upload" method="post" enctype="multipart/form-data" >
-			<div class="btn btn-default btn-file">
-			Browse Images <br>
-			<input type="file" name="image">
-			</div>
-
-			<input type="submit" value="Upload your image">
-		</form> -->
-		<!--  -->
-
-		<br>
-		<!-- Don't include this div/section if an image hasn't been successfully submitted -->
-		<div class="container ">
-		<!-- <form action="/action_page.php"> -->
-			<form>
-				<h3 class="text-center">Feedback Form</h3>
-
-				<!-- First feedback row -->
-				<div class="row border rounded theme-colour-b ">
-					<div class="col-sm-6 ">
-						<p>Was the image labelled correctly?</p>
-					</div>
-					<div class="col-sm-6 ">
-						<input type="radio" name="rateClassify" value="yes"> Yes<br>
-	 					<input type="radio" name="rateClassify" value="no"> No
-					</div>
-				</div>
-				<br>
-				<!-- Second feedback row -->
-				<div class="row border rounded theme-colour-b ">
-					<div class="col-sm-6 ">
-						<p>How effective was the background removal?</p>
-					</div>
-					<div class="col-sm-6 ">
-						<input type="radio" name="rateIsolate" value="perfect"> Perfect<br>
-						<input type="radio" name="rateIsolate" value="good"> Good<br>
-						<input type="radio" name="rateIsolate" value="poor"> Poor<br>
-						<input type="radio" name="rateIsolate" value="failure"> Failure
-					</div>
-				</div>
-				<br>
-				<!-- Third feedback row -->
-				<div class="row border rounded theme-colour-b ">
-					<div class="col-sm-12 ">
-						<p>Any comments on the labeling or background removal of the reult image?</p>
-					</div>
-					<div class="col-sm-12 ">
-						<input style="margin:1%" class=" w-100 " type="text" name="commentResult" value="">
-					</div>
-				</div>
-				<br>
-				<!-- Fourth feedback row -->
-				<div class="row border rounded theme-colour-b ">
-					<div class="col-sm-8 ">
-						<p>Comments or suggestions for this website?</p>
-						<input style="margin:1%" class=" w-100 " type="text" name="commentSite" value="">
-					</div>
-					
-					<div class="col-sm-4 ">
-						  <input  type="submit" class="btn btn-primary btn-lg btn-block h-100 " value="Submit">
-					</div>
-
-				</div>
-			</form>
-		</div>
-		<!-- <img class="img-responsive" src="{{ exampleImage }}" alt="Display Image" width="50%"> -->
 	</body>
-	<script src="static/clientCode/assistMethods.js"></script>
+	<!-- ##### SHARED HTML START ##### -->
+	<script src="static/clientCode/themeMethods.js"></script>
+	<script src="static/clientCode/assistMethods.js"></script>	
+	<!-- ##### SHARED HTML END ##### -->
 	<script src="static/clientCode/clientHome.js"></script>
 </html>

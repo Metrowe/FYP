@@ -1,24 +1,116 @@
 async function signupAttempt()
 {
-	// console.log(getBaseUrl());
+
 	let usernameElement = document.getElementById('signup-username');
 	let passwordElement = document.getElementById('signup-password');
 	let confirmpasswordElement = document.getElementById('signup-confirmpassword');
-	
-	// TODO: add validation for elements
+		
+	if( validString(usernameElement.value) && validString(passwordElement.value) )
+	{
+		if ( passwordElement.value == confirmpasswordElement.value )
+		{
+			// TODO: add validation for elements
 
-	url = getBaseUrl() + "/signuprequest";
+			url = getBaseUrl() + "signuprequest";
 
-	let formData = new FormData();
-	formData.append('username', usernameElement.value);
-	formData.append('password', passwordElement.value);
-	formData.append('confirmpassword', confirmpasswordElement.value);
+			let formData = new FormData();
+			formData.append('username', usernameElement.value);
+			formData.append('password', passwordElement.value);
+			formData.append('confirmpassword', confirmpasswordElement.value);
 
-	let result = await getJsonData(url,{method: "POST", body: formData});
+			let result = await getJsonData(url,{method: "POST", body: formData});
 
-	console.log(url);
-	console.log(result);
+			console.log(url);
+			console.log(result);
+
+			if( setToken(result) )
+			{
+				window.location.href = getBaseUrl() + '';
+			}
+			else
+			{
+				// let errorElement = document.getElementById('error-display');
+				let errorMessage = 'Signup Failed';
+
+				if ("error" in result) 
+				{
+			    	errorMessage = result.error;
+				}
+
+				displayError(errorMessage);
+			}
+		}
+		else
+		{
+			displayError('Password confirmation does not match');
+		}
+	}
+	else
+	{
+		displayError('Username and password can\'t be empty or contain spaces');
+	}
 }
+
+
+
+
+
+
+
+
+
+// async function loginAttempt()
+// {
+// 	let usernameElement = document.getElementById('login-username');
+// 	let passwordElement = document.getElementById('login-password');
+
+// 	if( validString(usernameElement.value) && validString(passwordElement.value))
+// 	{
+// 		console.log(true);
+// 		url = getBaseUrl() + "loginrequest";
+
+// 		let formData = new FormData();
+// 		formData.append('username', usernameElement.value);
+// 		formData.append('password', passwordElement.value);
+
+// 		let result = await getJsonData(url,{method: "POST", body: formData});
+
+// 		console.log(url);
+// 		console.log(result);
+
+// 		// TODO: check for errors
+// 		if( setToken(result) )
+// 		{
+// 			// window.location.href = getBaseUrl() + '';
+// 		}
+// 		else
+// 		{
+// 			let errorElement = document.getElementById('error-display');
+// 			let errorMessage = 'Login Failed';
+
+// 			if ("error" in result) 
+// 			{
+// 		    	errorMessage = result.error;
+// 			}
+
+// 			errorElement.innerHTML = errorMessage;
+// 			errorElement.style.display = 'block';
+// 		}
+// 	}
+// 	else
+// 	{	
+// 		let errorElement = document.getElementById('error-display');
+
+// 		errorElement.innerHTML = 'Username and password can\'t be empty or contain spaces';
+// 		errorElement.style.display = 'block';
+// 	}
+// }
+
+
+
+
+
+
 
 // testHelper();
 // console.log(window.location.href)

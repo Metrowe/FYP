@@ -6,7 +6,11 @@ quickRunFyp.bat
 #icw/static/images/results/*
 #icw/static/images/uploads/*
 
-#uploads 
-# icw/handling/*
-
 icw/__pycache__/*
+offline/*
+mobile apps/*
+offline/*
+Test HTML/*
+
+decode with timestamp.txt
+experiment.py
