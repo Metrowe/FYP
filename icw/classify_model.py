@@ -36,6 +36,12 @@ def createModel():
 	#add 32 then 16
 	#go to 64 96 64 output
 
+def getWeightedModel():
+	newModel = createModel()
+
+	newModel.load_weights(checkpoint_path)
+	return newModel	
+
 def makeSquare(image,padColour):
 	height, width, channels = image.shape
 
@@ -53,7 +59,6 @@ def makeSquare(image,padColour):
 def formatImage(image):
 	finalSize = 200
 	padColour = [0,0,0]
-
 
 	image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 

@@ -1,12 +1,12 @@
-from tensorflow import keras
-import tensorflow as tf
+# from tensorflow import keras
+# import tensorflow as tf
 import numpy as np
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import os
 import cv2
 
 # import errorHandling as error
-import modelConfiguration 
+import classify_model 
 
 # The label strings are path to the weights file are stored as global variables 
 # class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat', 'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
@@ -29,12 +29,12 @@ import modelConfiguration
 
 theModel = None
 
-def getWeightedModel():
-	checkpoint_path = "training_model/cp.ckpt"
-	newModel = modelConfiguration.createModel()
+# def getWeightedModel():
+# 	# checkpoint_path = "training_model/cp.ckpt"
+# 	newModel = modelConfiguration.createModel()
 
-	newModel.load_weights(modelConfiguration.checkpoint_path)
-	return newModel	
+# 	newModel.load_weights(modelConfiguration.checkpoint_path)
+# 	return newModel	
 
 # def formatImage(image):
 # 	# Convert from openCVs default BGR to grayscale
@@ -53,25 +53,26 @@ def getWeightedModel():
 
 
 # def classifyImage(imagePath,model):
-def classifyImage(imagePath,destpath):
+# def classifyImage(imagePath,destpath):
+def classifyImage(imagePath):
 	global theModel
 	if theModel == None:
-		theModel = getWeightedModel()
+		theModel = classify_model.getWeightedModel()
 
 	# theModel = getWeightedModel()
 	# Gets the image from the path and formats it to be the same as the training data
 	original = cv2.imread(imagePath)
 
-	formattedImage = modelConfiguration.formatImage(original)
+	formattedImage = classify_model.formatImage(original)
 
 	# TODO: Remove this line when isolate added back in
-	cv2.imwrite(destpath,formattedImage)
+	# cv2.imwrite(destpath,formattedImage)
 
 	try:
 		# Generates the predictions for the specified image
 		prediction = theModel.predict(np.array( [formattedImage,] ) )
 		# Finds the highest probability prediction and returns the corresponding label
-		result = modelConfiguration.class_names[np.argmax(prediction[0])]
+		result = classify_model.class_names[np.argmax(prediction[0])]
 	except:
 		result = 'Failed Classification'
 

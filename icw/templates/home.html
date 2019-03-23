@@ -35,7 +35,7 @@
 					<div class="row">
 						<!-- Example and result box -->
 						<div class="col-sm-6 theme-colour-b">
-							<div class="text-center">Example</div>
+							<div id="upload-heading" class="text-center">Example</div>
 							<div class="row">
 								<div class="col">
 									<div class="text-center">Uploaded Image</div>
@@ -51,16 +51,25 @@
 						</div>
 						<!-- Submit and question box -->
 						<div class="col-sm-6 theme-colour-c">
-							<input id="changeid" type="file" class="btn btn-primary btn-lg btn-block" value="Submit">
+							<input id="upload-file" type="file" class="btn btn-primary btn-lg btn-block" value="Submit">
 							<input onclick="uploadAttempt();" type="button" class="btn btn-primary btn-lg btn-block" value="Upload">
 
 							<div class="row">
 								<div class="col-sm-8 ">
-									<p>Can your uploaded image be added to the icwildlife gallery? (Images are filtered before being added to gallery)</p>
+									<p>Can your uploaded image be added to the icwildlife gallery? (Images are screened before being added to gallery)</p>
 								</div>
 								<div class="col-sm-4 text-center">
-									<input type="radio" name="galleryPass" value="yes" checked> Yes<br>
-									<input type="radio" name="galleryPass" value="no"> No
+									<input id="gallery-input1" type="radio" name="permissionGallery" value=true checked> Yes<br>
+									<input id="gallery-input2" type="radio" name="permissionGallery" value=false> No
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-8 ">
+									<p>Can your uploaded image be included in public datasets?</p>
+								</div>
+								<div class="col-sm-4 text-center">
+									<input id="dataset-input1" type="radio" name="permissionDataset" value=true checked> Yes<br>
+									<input id="dataset-input2" type="radio" name="permissionDataset" value=false> No
 								</div>
 							</div>
 						</div>

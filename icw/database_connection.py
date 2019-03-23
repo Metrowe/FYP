@@ -14,6 +14,8 @@ from sqlalchemy.orm import scoped_session
 
 import database_classes as table
 
+import configuration_strings as config
+
 # import database_modify as dbModify
 
 # 'mysql+pymysql://' (the dialect and driver).
@@ -26,14 +28,11 @@ import database_classes as table
 # Base = declarative_base()
 
 
-engine = create_engine('mysql://'+'metrowe:navybottle'+'@127.0.0.1:3306/'+'icwdata')
+engine = create_engine(config.databaseConnection)
 
 Session = scoped_session(sessionmaker(bind=engine))
 
-# table.Base.metadata.drop_all(engine)
-# print('After drop all: ' + str(engine.table_names()))
-# table.Base.metadata.create_all(engine)
-# print('After create all: ' + str(engine.table_names()))
+
 
 
 

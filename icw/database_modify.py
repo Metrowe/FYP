@@ -25,6 +25,8 @@ def safeCommit():
 		Session.rollback()
 		Session.flush()
 		success = False
+
+	return success
 ### END ERROR PREVENTION ###
 
 ### START INSERTS ###
@@ -55,13 +57,22 @@ def insertAdmin(username,password):
 
 	return newUser
 
-def insertGuestSubmission(originalPath,isolatePath,classResult,userPermission):
-	newSubmission = table.Submission(userPermission=userPermission, modApproval=False, modReviewed=False, animalLabel=classResult)
-	newSubmission.originalImage = table.Image(path=originalPath,original=True)
-	newSubmission.isolateImage = table.Image(path=isolatePath,original=False)
+def insertGuestSubmission(originalPath,isolatePath,summaryPath,animalLabel,permissionGallery,permissionDataset):
+	newSubmission = table.Submission(animalLabel=animalLabel,firstLabel=animalLabel, permissionGallery=permissionGallery, permissionDataset=permissionDataset, modApproval=False, modReviewed=False)
+	
+	print('sub,images type:',type(newSubmission.images))
+	print('sub length before:',len(newSubmission.images))
+
+	newSubmission.images.append(table.Image(type='original',path=originalPath))
+	newSubmission.images.append(table.Image(type='isolate',path=isolatePath))
+	newSubmission.images.append(table.Image(type='summary',path=summaryPath))
+
+	print('sub length after:',len(newSubmission.images))
+
 
 	Session.add(newSubmission)
 	success = safeCommit()
+	print('successvalue',success)
 
 	newSubmissionId = None
 	if success:
@@ -69,10 +80,12 @@ def insertGuestSubmission(originalPath,isolatePath,classResult,userPermission):
 
 	return newSubmissionId
 
-def insertUserSubmission(originalPath,isolatePath,classResult,userId,userPermission):
-	newSubmission = table.Submission(userPermission=userPermission, modApproval=False, modReviewed=False, animalLabel=classResult,userId=userId)
-	newSubmission.originalImage = table.Image(path=originalPath,original=True)
-	newSubmission.isolateImage = table.Image(path=isolatePath,original=False)
+def insertUserSubmission(originalPath,isolatePath,summaryPath,animalLabel,permissionGallery,permissionDataset,userId):
+	newSubmission = table.Submission(animalLabel=animalLabel, firstLabel=animalLabel, permissionGallery=permissionGallery, permissionDataset=permissionDataset, modApproval=False, modReviewed=False,userId=userId)
+
+	newSubmission.images.append(table.Image(type='original',path=originalPath))
+	newSubmission.images.append(table.Image(type='isolate',path=isolatePath))
+	newSubmission.images.append(table.Image(type='summary',path=summaryPath))
 
 	Session.add(newSubmission)
 	success = safeCommit()
@@ -99,12 +112,15 @@ def updateFeedback(submissionId,rateClassify,rateIsolate,commentResult,commentSi
 
 	return submission
 
-def updateModApproval(submissionId,approval):
+def updateModApproval(submissionId,approval,labelUpdate):
 	submission = dbQuery.idSubmission(submissionId)
 
 	if submission != None:
 		submission.modApproval = approval
 		submission.modReviewed = True
+
+		if labelUpdate != None:
+			submission.animalLabel = labelUpdate
 
 		Session.add(submission)
 		success = safeCommit()
@@ -120,14 +136,10 @@ def deleteSubmission(submissionId):
 	submission = dbQuery.idSubmission(submissionId)
 
 	if submission != None:
-		if submission.originalImage != None:
-			fileManagement.deleteFile(submission.originalImage.path)
-			Session.delete(submission.originalImage)
-		if submission.isolateImage != None:
-			fileManagement.deleteFile(submission.isolateImage.path)
-			Session.delete(submission.isolateImage)
-		if submission.subFeedback != None:
-			Session.delete(submission.subFeedback)
+		for image in submission.images:
+			print('image.path',image.path)
+			fileManagement.deleteFile(image.path)
+			Session.delete(image)
 
 		Session.delete(submission)
 		success = safeCommit()

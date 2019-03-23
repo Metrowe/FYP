@@ -21,9 +21,24 @@ function getSubmissionMarkup(submission)
 						</div>
 					</div>
 					<div class="row">
+						<div class="col-12 ">
+							<img style="max-width: 150px" src="${submission.summaryPath}" alt="Failed original load">
+						</div>
+					</div>
+					
+					<div class="row">
 						<div class="col ">
 							<b>Animal    :</b> ${submission.label} <b>| Correct:</b> ${submission.rateClassify}
 						</div>
+					</div>
+
+					<div class="row">
+						<div class="col">
+							<input id="label-input${submission.id}" list="labels" class="w-100" type="text" value="" placeholder="Animal">
+							<datalist id="labels">
+								<option value="antelope"><option value="bat"><option value="beaver"><option value="blue whale"><option value="bobcat"><option value="buffalo"><option value="chihuahua"><option value="chimpanzee"><option value="collie"><option value="cow"><option value="dalmatian"><option value="deer"><option value="dolphin"><option value="elephant"><option value="fox"><option value="german shepherd"><option value="giant panda"><option value="giraffe"><option value="gorilla"><option value="grizzly bear"><option value="hamster"><option value="hippopotamus"><option value="horse"><option value="humpback whale"><option value="killer whale"><option value="leopard"><option value="lion"><option value="mole"><option value="moose"><option value="mouse"><option value="otter"><option value="ox"><option value="persian cat"><option value="pig"><option value="polar bear"><option value="rabbit"><option value="raccoon"><option value="rat"><option value="rhinoceros"><option value="seal"><option value="sheep"><option value="siamese cat"><option value="skunk"><option value="spider monkey"><option value="squirrel"><option value="tiger"><option value="walrus"><option value="weasel"><option value="wolf"><option value="zebra">
+							</datalist>
+						</div>	
 					</div>
 
 					<div class="row">
@@ -39,6 +54,11 @@ function getSubmissionMarkup(submission)
 					<div class="row">
 						<div class="col ">
 							<b>Websit txt:</b> ${submission.commentSite}
+						</div>
+					</div>
+					<div class="row">
+						<div class="col ">
+							<b>Username:</b> ${submission.username}
 						</div>
 					</div>
 					<div class="row">
@@ -107,12 +127,20 @@ async function adminapprovalAttempt()
 
 async function setapprovalAttempt(approval,submissionId)
 {	
+	let labelElement = document.getElementById('label-input'+submissionId);
+	label = labelElement.value.replace(' ', '+');
+
 	let url = getBaseUrl() + "setapprovalrequest";
 
 	let headers = { 'Authorization': getToken() };
 	let formData = new FormData();
 	formData.append('approval', approval);
 	formData.append('submissionId', submissionId);
+
+	if (label != '')
+	{
+		formData.append('newLabel', label);
+	}	
 
 	let result = await getJsonData(url,{method: 'POST', headers: headers, body: formData});
 

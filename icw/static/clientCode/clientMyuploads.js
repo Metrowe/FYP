@@ -42,14 +42,15 @@ async function myuploadsAttempt()
 	let typeInputElement1 =  document.getElementById('type-input1');
 	let typeInputElement2 =  document.getElementById('type-input2');
 	let typeInputElement3 =  document.getElementById('type-input3');
+	let typeInputElement4 =  document.getElementById('type-input4');
 
-	label = labelElement.value.replace(' ', '+');
-	type = getCheckedRadioValue(typeInputElement1,typeInputElement2,typeInputElement3);
+	label = label = labelElement.value.replace(' ', '+');
+	type = getCheckedRadioValue(typeInputElement1,typeInputElement2,typeInputElement3,typeInputElement4);
 	labelElement.value = '';
 
 	let headers = { 'Authorization': getToken() };
 	let formData = new FormData();
-	formData.append('type', type);
+	formData.append('category', type);
 	formData.append('label', label);
 
 	// console.log('label: ' + label);

@@ -11,6 +11,4 @@ offline/*
 mobile apps/*
 offline/*
 Test HTML/*
-
-decode with timestamp.txt
-experiment.py
+icw/configuration_strings.py

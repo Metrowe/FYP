@@ -24,25 +24,36 @@ async function getJsonData(url, options)
 
 async function uploadAttempt()
 {
+	let galleryinputElement1 = document.getElementById('gallery-input1');
+	let galleryinputElement2 = document.getElementById('gallery-input2');
+	let datasetinput1 = document.getElementById('dataset-input1');
+	let datasetinput2 = document.getElementById('dataset-input2');
+
+	permissionGallery = getCheckedRadioValue(galleryinputElement1,galleryinputElement2);
+	permissionDataset = getCheckedRadioValue(datasetinput1,datasetinput2);
+
 	hideElement('message-display');
 	
 	console.log('submissionToken',submissionToken);
 
+	let heading = document.getElementById('upload-heading');
 	let inputImage = document.getElementById('upload-input');
 	let outputImage = document.getElementById('upload-output');
 	let label = document.getElementById('upload-label');
 	
+	heading.textContent = "Your upload"
 	inputImage.src = "";
 	outputImage.src = "";
 	label.textContent = "loading...";
 
 	//prepare get jsondata
-	url = getBaseUrl() + "upload";
+	url = getBaseUrl() + "uploadRequest";
 
 	let headers = { 'Authorization': getToken() };
 	let formData = new FormData();
-	formData.append("image", document.getElementById("changeid").files[0]);
-	formData.append("token", "placeholderToken");
+	formData.append("image", document.getElementById("upload-file").files[0]);
+	formData.append("permissionGallery", permissionGallery);
+	formData.append("permissionDataset", permissionDataset);
 
 	let result = null;
 
