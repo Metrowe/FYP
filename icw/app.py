@@ -159,6 +159,8 @@ def loginrequest():
 			else:
 				response = web_handling.responseError('Username or password is incorrect')
 
+
+	# response = web_handling.responseError(str(postArgs) + str(len(postArgs)))
 	return jsonify(response)
 
 @app.route('/signuprequest', methods=['POST'])
