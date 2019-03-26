@@ -89,6 +89,11 @@ async function uploadAttempt()
 	}
 	else
 	{
+		inputImage.src = 'static/images/examples/antelope-input-example.jpg';
+		outputImage.src = 'static/images/examples/antelope-output-example.jpg';
+		label.textContent = 'Antelope'
+		heading.textContent = 'Example'
+
 		let errorMessage = 'Upload Failed';
 
 		if ('error' in result) 

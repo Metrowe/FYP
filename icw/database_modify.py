@@ -102,7 +102,7 @@ def updateFeedback(submissionId,rateClassify,rateIsolate,commentResult,commentSi
 	submission = dbQuery.idSubmission(submissionId)
 
 	if submission != None:
-		submission.subFeedback = table.Feedback(rateClassify=rateClassify,rateIsolate=rateIsolate,commentResult=commentResult,commentSite=commentSite)
+		submission.feedback = table.Feedback(rateClassify=rateClassify,rateIsolate=rateIsolate,commentResult=commentResult,commentSite=commentSite)
 
 		Session.add(submission)
 		success = safeCommit()

@@ -67,7 +67,7 @@ def formatImage(image):
 
 	normalised = resized / 255.0
 
-	return resized
+	return normalised
 
 # def formatImage(image):
 # 	# Convert from openCVs default BGR to RGB

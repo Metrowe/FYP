@@ -24,6 +24,7 @@ dname = os.path.dirname(abspath)
 os.chdir(dname)
 
 app = Flask(__name__,template_folder='templates',static_folder='static')
+app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024
 
 STATIC_FOLDER = os.path.basename('static')
 IMAGE_FOLDER = os.path.join(STATIC_FOLDER,'images')
@@ -72,48 +73,65 @@ def adminapproval():
 @app.route('/uploadRequest', methods=['POST'])
 def uploadRequest():
 	# Handles error if image file is not in request
-	try:
+	file = None
+	if 'image' in request.files.keys():
 		file = request.files['image']
-	except:
-		file = None
 
-	headers = dict(request.headers)
-	postArgs = dict(request.values)
-	files = dict(request.files)
+	token = web_handling.getAuthorization(request.headers)
+
+	permissionGalleryString, permissionDatasetString = web_handling.getArgs(request.values, 'permissionGallery', 'permissionDataset')
+	permissionGallery = web_handling.stringToBool(permissionGalleryString)
+	permissionDataset = web_handling.stringToBool(permissionDatasetString)
+
 
 	response = web_handling.responseError('Upload request invalid')
 
 	# Renders upload page with error if no file received
-	if file != None and 'permissionGallery' in postArgs.keys() and 'permissionDataset' in postArgs.keys():
-		permissionGallery = web_handling.stringToBool(postArgs['permissionGallery'])
-		permissionDataset = web_handling.stringToBool(postArgs['permissionDataset'])
+	if file != None and permissionGallery != None and permissionDataset != None:
+		
+		# Constructs path for image to be saved to
+		filename = os_fileManagement.getUniqueTimeStamp() + '.png'
+		originalPath = os.path.join(ORIGINAL_IMAGES,filename)
+		isolatePath = os.path.join(ISOLATE_IMAGES,filename)
+		summaryPath = os.path.join(SUMMARY_IMAGES,filename)
+		file.save(originalPath)
 
-		if permissionGallery != None and permissionDataset != None:
+		if os_fileManagement.validImageFile(originalPath):
+			animalLabel = None
+			isolateSuccess = False
 
-			# Constructs path for image to be saved to
-			filename = os_fileManagement.getUniqueTimeStamp() + '.png'
-			originalPath = os.path.join(ORIGINAL_IMAGES,filename)
-			isolatePath = os.path.join(ISOLATE_IMAGES,filename)
-			summaryPath = os.path.join(SUMMARY_IMAGES,filename)
-			file.save(originalPath)
+			try:
+				animalLabel = classify_process.classifyImage(originalPath)
+			except Exception as e:
+				logf = open('zClassifyError.log', 'a')
+				logf.write('Failed classify [{0}]: {1}\n'.format(filename,str(e)))
 
-			# TODO: change classify not to take isolate path and have seperate function for making image response
-			animalLabel = classify_process.classifyImage(originalPath)
-			isolateSuccess = isolate_process.isolateImage(originalPath,isolatePath,summaryPath)
+			try:
+				isolateSuccess = isolate_process.isolateImage(originalPath,isolatePath,summaryPath)
+			except Exception as e:
+				logf = open('zIsolateError.log', 'a')
+				logf.write('Failed isolate [{0}]: {1}\n'.format(filename,str(e)))
 
-			# classResult = imageClassification.classifyImage(originalPath)
-			# success = imageIsolation.isolateImage(isolatePath)
+			if animalLabel != None and isolateSuccess:
+				if token != None:
+					payload = web_tokens.decode(token)
 
-			if 'Authorization' in headers.keys():
-				token = headers['Authorization']
-				payload = web_tokens.decode(token)
+					if payload != None and 'userid' in payload.keys() and dbQuery.idUserExist(payload['userid']):
+						userId = payload['userid']
+						submissionId = dbModify.insertUserSubmission(originalPath,isolatePath,summaryPath,animalLabel,permissionGallery,permissionDataset,userId)
 
-				if payload != None and 'userid' in payload.keys() and dbQuery.idUserExist(payload['userid']):
-					userId = payload['userid']
-					submissionId = dbModify.insertUserSubmission(originalPath,isolatePath,summaryPath,animalLabel,permissionGallery,permissionDataset,userId)
-
-					# insertUserSubmission(originalPath,isolatePath,summaryPath,animalLabel,permissionGallery,permissionDataset,userId)
-					# insertGuestSubmission(originalPath,isolatePath,summaryPath,animalLabel,permissionGallery,permissionDataset)
+						# Renders upload page with classification info and the processed image
+						response = {
+							'inputPath': originalPath,
+							'outputPath': isolatePath,
+							'summaryPath': summaryPath,
+							'label': animalLabel,
+							'submissionToken': web_tokens.encode({'submissionId': submissionId})
+						}
+					else:
+						response = web_handling.responseError('Failed Authorization')
+				else:
+					submissionId = dbModify.insertGuestSubmission(originalPath,isolatePath,summaryPath,animalLabel,permissionGallery,permissionDataset)
 					# Renders upload page with classification info and the processed image
 					response = {
 						'inputPath': originalPath,
@@ -122,82 +140,70 @@ def uploadRequest():
 						'label': animalLabel,
 						'submissionToken': web_tokens.encode({'submissionId': submissionId})
 					}
-				else:
-					response = web_handling.responseError('Failed Authorization')
 			else:
-				submissionId = dbModify.insertGuestSubmission(originalPath,isolatePath,summaryPath,animalLabel,permissionGallery,permissionDataset)
-				# Renders upload page with classification info and the processed image
-				response = {
-					'inputPath': originalPath,
-					'outputPath': isolatePath,
-					'summaryPath': summaryPath,
-					'label': animalLabel,
-					'submissionToken': web_tokens.encode({'submissionId': submissionId})
-				}
+				response = web_handling.responseError('Failed isolate and classify')
+		else:
+			response = web_handling.responseError('Invalid file, only images are accepted')
 
 	return jsonify(response)
 
 @app.route('/loginrequest', methods=['POST'])
 def loginrequest():
-	dbQuery.allUsers()
-
-	postArgs = dict(request.values)
+	username, password = web_handling.getArgs(request.values, 'username', 'password')
+	username = web_handling.getValidString(username)
+	password = web_handling.getValidString(password)
 
 	response = web_handling.responseError('Login denied')
 
-	if 'username' in postArgs.keys() and 'password' in postArgs.keys():
+	if username != None and password != None:
 
-		if web_handling.validString(postArgs['username']) and web_handling.validString(postArgs['password']):
+		user = dbQuery.namePassUser(username,password)
 
-			user = dbQuery.namePassUser(postArgs['username'],postArgs['password'])
+		if user != None:
+			response = {
+				'token': web_tokens.encode({'userid': user.id})
+			}
+		else:
+			response = web_handling.responseError('Username or password is incorrect')
 
-			if user != None:
-				dbQuery.allUsers()
-				response = {
-					'token': web_tokens.encode({'userid': user.id})
-				}
-			else:
-				response = web_handling.responseError('Username or password is incorrect')
-
-
-	# response = web_handling.responseError(str(postArgs) + str(len(postArgs)))
 	return jsonify(response)
 
 @app.route('/signuprequest', methods=['POST'])
 def signuprequest():
-	postArgs = dict(request.values)
+	username, password, confirmpassword = web_handling.getArgs(request.values, 'username', 'password','confirmpassword')
+	username = web_handling.getValidString(username)
+	password = web_handling.getValidString(password)
+	confirmpassword = web_handling.getValidString(confirmpassword)
 
 	response = web_handling.responseError('Signup denied')
 
-	if 'username' in postArgs.keys() and 'password' in postArgs.keys() and 'confirmpassword' in postArgs.keys():
+	if username != None and password != None and password == confirmpassword:
+		user = dbModify.insertUser(username,password)
 
-		if postArgs['password'] == postArgs['confirmpassword']:
-
-			if web_handling.validString(postArgs['username']) and web_handling.validString(postArgs['password']):
-				user = dbModify.insertUser(postArgs['username'],postArgs['password'])
-
-				if user != None:
-					response = {
-						'token': web_tokens.encode({'userid': user.id})
-					}
-				else:
-					response = web_handling.responseError('Username is already taken')
+		if user != None:
+			response = {
+				'token': web_tokens.encode({'userid': user.id})
+			}
+		else:
+			response = web_handling.responseError('Username is already taken')
 
 	return jsonify(response)
 
 @app.route('/givefeedbackrequest', methods=['POST'])
 def giveFeedbackRequest():
-	postArgs = dict(request.values)
+	submissionToken, rateClassify, rateIsolate, commentResult, commentSite = web_handling.getArgs(request.values, 'submissionToken','rateClassify','rateIsolate','commentResult','commentSite')
 
-	reponse = web_handling.responseError('Feedback request denied')
+	response = web_handling.responseError('Feedback request denied')
 
-	if 'submissionToken' in postArgs.keys() and 'rateClassify' in postArgs.keys() and 'rateIsolate' in postArgs.keys() and 'commentResult' in postArgs.keys() and 'commentSite' in postArgs.keys():
-		payload = web_tokens.decode(postArgs['submissionToken'])
+	if submissionToken != None and rateClassify != None and rateIsolate != None and commentResult != None and commentSite != None:
+		payload = web_tokens.decode(submissionToken)
 
-		if payload != None:
-			submission = dbModify.updateFeedback(payload['submissionId'],postArgs['rateClassify'],postArgs['rateIsolate'],postArgs['commentResult'],postArgs['commentSite'])
-			print('DB insert: ' + str(submission != None))
-			print('ID: ' + str(submission.id))
+		if payload != None and 'submissionId' in payload.keys():
+			submission = dbModify.updateFeedback(payload['submissionId'],rateClassify, rateIsolate, commentResult, commentSite)
+
+			print('payload[submissionId]:',payload['submissionId'])
+			print('submission',submission)
+			print('submission.feedback',submission.feedback)
 
 			response = {
 				'message': 'Feedback submission success'
@@ -207,28 +213,18 @@ def giveFeedbackRequest():
 
 	return jsonify(response)
 
-
 @app.route('/galleryrequest', methods=['POST'])
 def galleryRequest():
-	postArgs = dict(request.values)
+	category, label = web_handling.getArgs(request.values, 'category', 'label')
 
 	response = web_handling.responseError('Gallery request invalid')
 
-	if 'category' in postArgs.keys() and 'label' in postArgs.keys():
-		print('postArgs[label] : ' + str(postArgs['label']))
-		# print('type : ' + str(type(postArgs['label'])))
-
-		category = postArgs['category']
-		label = postArgs['label']
-
+	if category != None and label != None:
 		if category == '' or category == 'all':
 			category = None
 
 		if label == '':
 			label = None
-
-		print('label',label)
-
 
 		images = dbQuery.filterGalleryImages(category,label)
 
@@ -238,30 +234,24 @@ def galleryRequest():
 
 @app.route('/myuploadsrequest', methods=['POST'])
 def myuploadsRequest():
-	headers = dict(request.headers)
-	postArgs = dict(request.values)
+	token = web_handling.getAuthorization(request.headers)
+	category, label = web_handling.getArgs(request.values, 'category', 'label')
+
 
 	response = web_handling.responseError('Myuploads request invalid')
 
-	if 'Authorization' in headers.keys():
-		token = headers['Authorization']
+	if token != None:
 		payload = web_tokens.decode(token)
 
 		if payload != None and 'userid' in payload.keys() and dbQuery.idUserExist(payload['userid']):
 			id = payload['userid']
 
-			if 'category' in postArgs.keys() and 'label' in postArgs.keys():
-				category = postArgs['category']
-				print('category',category)
-				label = postArgs['label']
-
+			if category != None and label != None :
 				if category == '' or category == 'all':
 					category = None
 
 				if label == '':
 					label = None
-
-				print('label',label)
 
 				images = dbQuery.filterMyuploadsImages(category,label,id)
 
@@ -272,13 +262,11 @@ def myuploadsRequest():
 
 @app.route('/adminapprovalrequest', methods=['POST'])
 def adminapprovalRequest():
-	headers = dict(request.headers)
+	token = web_handling.getAuthorization(request.headers)
 
 	response = web_handling.responseError('Adminapproval request invalid')
 
-	if 'Authorization' in headers.keys():
-		token = headers['Authorization']
-
+	if token != None:
 		payload = web_tokens.decode(token)
 
 		if payload != None and 'userid' in payload.keys() and dbQuery.idUserAdmin(payload['userid']):
@@ -300,6 +288,8 @@ def adminapprovalRequest():
 				commentSite = None
 
 				feedback = submission.feedback
+
+				print('submission.feedback:',submission.feedback)
 				if feedback != None:
 					rateClassify = feedback.rateClassify
 					rateIsolate = feedback.rateIsolate
@@ -329,49 +319,50 @@ def adminapprovalRequest():
 
 @app.route('/setapprovalrequest', methods=['POST'])
 def setApprovalRequest():
-	postArgs = dict(request.values)
-	headers = dict(request.headers)
+	token = web_handling.getAuthorization(request.headers)
+	submissionId, approval, newLabel = web_handling.getArgs(request.values, 'submissionId', 'approval', 'newLabel')
+	approval = web_handling.stringToBool(approval)
+
+
+	# postArgs = (request.values).to_dict()
+	# headers = dict(request.headers)
 
 	response = web_handling.responseError('Setapproval request invalid')
 
-	if 'Authorization' in headers.keys():
-		token = headers['Authorization']
-
+	if token != None:
 		payload = web_tokens.decode(token)
 
 		if payload != None and 'userid' in payload.keys() and dbQuery.idUserAdmin(payload['userid']):
 
-			if 'approval' in postArgs.keys() and 'submissionId' in postArgs.keys():
-				approval = web_handling.stringToBool(postArgs['approval'])
+			if submissionId != None and approval != None:
 
-				newLabel = None
-				if 'newLabel' in postArgs.keys() and postArgs['newLabel'] != '':
-					newLabel = postArgs['newLabel']
+				# if newLabel != None and newLabel != '':
+				# 	newLabel = postArgs['newLabel']
 
-				if approval != None:
-					submission = dbModify.updateModApproval(postArgs['submissionId'],approval,newLabel)
+				submission = dbModify.updateModApproval(submissionId,approval,newLabel)
 
-					response = { 'message': 'id' }
-
+				if submission != None:
+					response = { 'message': submissionId }
 
 	return jsonify(response)
 
 @app.route('/deletesubmissionrequest', methods=['POST'])
 def deleteSubmissionRequest():
-	postArgs = dict(request.values)
-	headers = dict(request.headers)
+	# postArgs =(request.values).to_dict()
+	# headers = dict(request.headers)
+
+	token = web_handling.getAuthorization(request.headers)
+	submissionId, newLabel = web_handling.getArgs(request.values, 'submissionId', 'newLabel')
 
 	response = web_handling.responseError('Delete submission request invalid')
 
-	if 'Authorization' in headers.keys():
-		token = headers['Authorization']
-
+	if token != None:
 		payload = web_tokens.decode(token)
 
 		if payload != None and 'userid' in payload.keys() and dbQuery.idUserAdmin(payload['userid']):
 
-			if 'submissionId' in postArgs.keys():
-				success = str(dbModify.deleteSubmission(postArgs['submissionId']))
+			if submissionId != None:
+				success = str(dbModify.deleteSubmission(submissionId))
 
 				response = { 'message': 'delete ' + success }
 

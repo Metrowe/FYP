@@ -1,0 +1,223 @@
+%\documentclass{article}
+%\usepackage[utf8]{inputenc}
+
+\documentclass[12pt]{article}
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage[gen]{eurosym}
+
+\title{Final Year Project Report}
+\author{emmetrowe}
+\date{March 2019}
+
+\begin{document}
+
+
+\begin{titlepage}
+
+Final Year Project Report
+
+\end{titlepage}
+\newpage
+\tableofcontents
+\newpage
+\section{Introduction}
+
+\subsection{Overview}
+\textcolor{red}{TODO: All Overview}
+    
+    \subsection{Project Objectives}
+There are three main objectives for this project:
+\begin{itemize}
+    \item Separating the subject of a photo from the background using image processing.
+    \item Classify the subject of a photo into a specific animal category using machine learning.
+    \item Provide a website that allows users to upload photos for classification and background removal. A user feedback form will also be available to get user opinions on result images and any suggestions or observed issues.
+\end{itemize}
+All together this will make up a full stack web application with features that
+analyse and edit user photos.
+I believe that the project will have a moderate accuracy for removing backgrounds but
+a lower success rate for correctly identifying subjects due to the high number of
+unpredictable features in nature photos.
+
+    
+    \subsection{Project Challenges}
+    \textcolor{red}{TODO: All Project}
+    
+    \subsection{Structure of Document}
+    \textcolor{red}{TODO: All Structure}
+
+    
+\section{Research}
+    \subsection{Introduction}
+This chapter deals with key areas of research that are incorporated in this project
+\newline
+\textcolor{red}{TODO: FIX:
+Object recognition also referred to as object classification is mainly done using
+machine learning nowadays. This meant exploring a number of well developed methods that are available for object recogniton. I decided to explore the general topic and see what
+methods were available. I also checked to see if any of the datasets they used were
+publicly available.}
+
+    \subsection{Background Research}
+        \subsubsection{Object Recognition}
+Baxter et al. \cite{objectRecognitionMachineTranslation} attempted object recognition based upon segmenting an image into regions and attempting to match supplied keywords to different region types. It used a dataset that was not named or made publicly available. The approach they proposed was invariant with regard to feature type but had the issue that unwanted bias tended to be present as the dataset provided had a lack of variety.\bigbreak 
+\noindent
+Belongie et al. used shape matching and shape contexts to recognise objects/shapes. \cite{objectRecognitionShapeMatching} They used a variety of datasets. The result of the study demonstrated that their simple approach that relied on estimation of shape similarity and shape context provides great shape recognition with invariance to image transformations.\bigbreak 
+\noindent
+Barla et al. \textcolor{red}{TODO: ref (3)} used what is known as a Hausdorff Kernel for 3D Object Acquisition and Detection. Their approach uses a kernel that examines one object type at a time. It successfully identifies the smallest sphere in the feature space using the training data and this sphere can be used as a decision surface to classify new examples. It tended to have an impressive success rate for detecting 3D models.\bigbreak 
+\noindent
+Lowe\textcolor{red}{TODO: ref (4)} focused on “Object Recognition from Local Scale-Invariant Features”. Although he outlined an approach for finding a Scale Invariant Feature Transformation (SIFT) that can then be used for identifying additional features which then allows for robust recognition even with partial occlusion in cluttered images Lowe did not report on what data was used for the experiments or provide detailed experimental results.\bigbreak 
+\noindent
+        \subsubsection{Edge Detection}
+\textcolor{red}{TODO: FIX: My initial idea for isolating the subject was to first focus on finding the edges in a photo. Edge detection typically works by identifying points at which image brightness changes drastically and organised into a set of line segments which are labelled edges. There are two main abstract methods, search based(5) and zero-crossing based.}
+
+My initial idea for isolating the subject was to first focus on finding the edges in a photo. Edge detection typically works by identifying points at which image brightness changes drastically and organised into a set of line segments which are labelled edges. There are two main abstract methods, search based(5) and zero-crossing based.
+
+
+
+    \subsection{Alternative Existing Solutions}
+    \textcolor{red}{TODO: All Alternative}
+
+    \subsection{Technologies Researched}
+        \subsubsection{OpenCV}
+OpenCV\cite{technologyOpenCVQuote} was originally developed by the Intel Research Labs with the hope to improve the ease of access to hopefully advance vision research by providing open, well optimised code for computer vision basics. This would save a lot of time on the necessary setup for tackling image processing. They wanted their code base to be used as a standard so that knowledge and techniques would be more transferable. The OpenCV library was made available on as many platforms as possible so that it would be extremely portable. The license was made to be non-restrictive so that it could be used for more than just public open projects.\bigbreak 
+\noindent
+There are many benefits of using OpenCV, as mentioned above it is quite portable so it’s easy to incorporate it into different code bases.
+It is free to use which is always a positive and this paired with its great accessibility results in high usage in the industry and a lot of experienced users writing.\bigbreak 
+\noindent
+It has low ram usage and is very fast for its C/C++ implementations. There is also a python library that while slower, can be preferable due to having a simpler code base and more readable scripts. OpenCV-Python works with Numpy which is an extremely efficient library that has a wide range of mathematical computations. Numpy is used by a large number of libraries so its implementation can improve compatibility with other technologies.
+
+    \subsubsection{TensorFlow}
+TensorFlow was developed by the Google Brain Team and is heavily used in the realm of machine learning. It has in built functionality for running computation on CPUs, multiple GPUs and TPUs and on devices such as mobile, desktop and server clusters. This allows users to minimise deep learning training time by sharing the load.\bigbreak 
+\noindent
+It works with Python 3 and has some image processing abilities, however most of these are designed for formatting images to be used as training data. It has many useful APIs, for example keras. Keras is well suited for fast prototyping as it is designed based on user interaction rather than to fully describe machine learning logic. This user-friendly design paired with its modular design make it a great tool for making an implementation quickly that has the ability to be expanded upon later.\bigbreak 
+\noindent
+It is well suited for deep learning and is perfect for neural networks with lots of layers and strange topology. TensorFlow has great tools for visualisation that assist in debugging and optimising applications. It is a widely used and freely accessible framework that is extremely well documented with hundreds of tutorials.
+
+        \subsubsection{Amazon Web Services}
+Amazon Web Services (AWS) is a cloud services platform that offers functionality such as content delivery, computing power and database storage\cite{technologyAwsQuote}. AWS had a bare-bones launch in 2002. Its focus is on providing businesses solutions that increase flexibility, scalability and reliability.\bigbreak 
+\noindent
+The amount of technologies it is able to support is astounding. It has ways of incorporating almost every technology researched in this section apart from rival cloud services of course. It is easy to use and deploying basic applications to the cloud can be achieved quickly by following a range of their well laid out tutorials. The scalability solutions mean there are no limits on capacity and the current capacity can be upgraded as needed. Other services force businesses to select specific tiers meaning money is wasted if future use is over estimated, while AWS lets businesses pay for the storage used.\bigbreak 
+\noindent
+Flexibility means you can get access to needed services quickly. Business in need of technical expansion typically have to plan acquisition and setup of hardware that could take days before forward progress can be made. AWS allows access to these services almost immediately and with tools for elastic load balancing business can match their exact demand.\bigbreak 
+\noindent
+AWS has good security that doesn’t require any extra effort on businesses end to maintain. All data is kept on their private secure servers and protection is size invariant, so vulnerabilities don’t arise for even the largest databases.\bigbreak 
+\noindent
+A big disadvantage of the platform is their technical support fees. The service is meant to be almost completely automated for the user so it should be rare that support is needed but for moderately sized businesses, monthly support fees can be hundreds or even thousands. 
+
+    \textcolor{red}{TODO: ADD Pythonanywhere}
+
+        \subsubsection{Digital Ocean}
+DigitalOcean define themselves as “a values-driven organization” that believe they should, “Start by defining the problem. Have the courage to approach a problem from a different perspective. Plan ahead, but act decisively. Consider that the simplest approach is often the best.” \cite{technologyDigitalOceanQuote} They have a large focus on developer experience and this influences their user interface design. This can be seen in the control panel for their service, where a lot of time consuming tasks are made simpler with fast compute server creation, reliable object storage and management tools for infrastructure.\bigbreak 
+\noindent
+The DigitalOcean cloud is SSD-only. This is rare in the cloud services market as it’s cheaper to use slower mechanical hard drives in the creation of a cloud platform. The performance benefits of the system are available to all users allowing server launch in less than a minute. This paired with the control panel makes server configuration quick and easy.\bigbreak 
+\noindent
+The quality of the hosting is incredible and has a low barrier of entry as it is less than \euro{}10 a month. This means it is a tool that is feasible for both a lone developer or a giant business. Learning to use digital oceans service is easy as there are many tutorials available as well as a well-developed Q \& A Section.\bigbreak 
+\noindent
+DigitalOcean have many Linux distributions available but not even a single kind of windows distribution is available which can be limiting depending on developers experience and preferences. Also they don’t use centralised storage, meaning backups need to be handled by the user if the data loss risk is to be mitigated.
+
+        \subsubsection{Flask}
+Surprisingly, Flask was created as an April fools joke\cite{technologyOpeningTheFlask} and had its initial release in 2011. Despite this odd start, it has grown to be one of the most popular web frameworks for non-enterprise developers. This is most likely thanks to its versatility and lack of boilerplate meaning it is very pythonic and not too abstract.\bigbreak 
+\noindent
+Flask is a microframework that supports hundreds of extensions so the features that can be implemented suit the majority of users needs. This means you’re not locked down to a specific database or templating engine, it gives developers a lot of freedom.\bigbreak 
+\noindent
+It is extremely easy to get started with flask, an application can be made in less than 10 lines. These basic apps can then be expanded upon to improve understanding and start to develop into useful web apps. This is something to be valued as some web frameworks can take many hours of learning to even get a proof of concept app running reliably. Flask is a great tool for any developers that enjoy the hands-on approach for learning a new technology.\bigbreak 
+\noindent
+A downside to the versatility means developers can find themselves in uncharted territory if they are using a rare combination of extensions. Even with an active community there is going to be many blind spots in the documentation for a framework such as Flask.
+
+        \subsubsection{Django}
+“Django is a high-level Python Web framework that encourages rapid development and clean, pragmatic design. Built by experienced developers, it takes care of much of the hassle of Web development”\cite{technologyDjangoQuote} They also make the important note that the framework is free and open source. \bigbreak 
+\noindent
+Django is designed to speed up the creation of web applications. It is referred to as a batteries included framework meaning that developers have what the tools they need to power their web application out of the box. Even though many of the features may go unused they are wide ranging enough that most elements of a project can be created just using the default packages. This means after successive applications have been created with Django a developer can quickly deploy their arsenal of tools on a new project and reach completion faster.\bigbreak 
+\noindent
+This also highlights how Django developers can be transferred far more seamlessly than other framework developers. The tools being ubiquitous among Django projects ensures that developers can jump right into a project at any point. Also, with it being a scalable framework that means there are many approaches for handling larger projects such as running separate servers for each element of the application or load balancing.\bigbreak 
+\noindent
+The main negative point for Django is how it can be quite obtuse for smaller projects. It can be annoying having such a large project structure for a single page web personal website. Of course, this doesn’t make Django any less effective, just a bit overkill when it comes to simple applications.
+
+        \subsubsection{MySQL}
+“MySQL is the world's most popular open source database. With its proven performance, reliability and ease-of-use, MySQL has become the leading database choice for web-based applications, used by high profile web properties including Facebook, Twitter, YouTube, Yahoo! and many more.”\cite{technologyMySQLQuote} It is a high performance database management system that is compatible with a lot of different setups.\bigbreak 
+\noindent
+It is quite proficient at handling multi-user interaction unlike the previous technology. It is a fast and stable server that is well suited for programs that handle large numbers of concurrent additions and edits such as order or booking systems.\bigbreak 
+\noindent
+It is incorporated in the LAMP stack used in many web-based applications. LAMP (Linux, Apache, MySQL, PHP/Perl/Python) is widely used throughout the industry and is one of the leading open source web platforms.\bigbreak 
+\noindent
+The only disadvantage is the requirement of a running server for access, however this is the case for all but a few database implementations.
+
+        \subsubsection{SQLite}
+SQLite is one of the most basic database implementations possible. It is entirely self-contained, doesn’t require a server or even any configuration. It is different to the SQL databases that require a server process as it reads and writes directly to disk.\bigbreak 
+\noindent
+The main advantages and disadvantages for SQLite are directly related to scale. For a simple database with only a few tables it is perfect for the task, easy setup, simple operations and no requirement to run a server process. For a large database accessible by many users simultaneously there will be a large drop in speed. This is due to the database being locked during access meaning users need to queue for access. That means there is a point at which an SQLite database base will become unusable with no way of improving scalability.  
+
+
+
+
+    \subsection{Resultant Findings and Requirements}
+        \subsubsection{Image Processing}
+The above research covered the image processing library OpenCV. Its Python library is well documented, and has been shown to be quite intuitive. 
+
+Since starting this project, I have had a lot of practice with OpenCV-Python and become quite proficient.
+
+The main downside to OpenCV-Python is its lower speed compared to the C++ version. The use case for image processing in this project is to remove the background from user submitted photos before providing the isolated image back to the user. From my experience, even heavily processing a single image rarely takes more than a second or two. I decided to pick OpenCV-Python as I believe my familiarity with it outweighs the speed benefit of the C++ for the required use case.
+
+    \textcolor{red}{TODO: All Resultant}
+
+\section{Design}
+    \subsection{Methodology Chosen}
+    \textcolor{red}{TODO: All Methodology}
+
+    % \subsection{Chosen Approach}
+    \subsection{User Stories}
+    \textcolor{red}{TODO: All User}
+
+    \subsection{Use Cases}
+    \textcolor{red}{TODO: All Use}
+
+    \subsection{Features Included}
+    \textcolor{red}{TODO: All Features}
+
+    % \subsection{User Interface for Demonstration System}
+    
+\section{Architecture and Development}
+    \subsection{Technical Architecture}
+    \textcolor{red}{TODO: All Technical}
+
+    \subsection{Development}
+    \textcolor{red}{TODO: All Development}
+
+
+\section{Testing and Results}
+    % \subsection{Introduction}
+    \subsection{Test Plan}
+    \textcolor{red}{TODO: All Test}
+
+    % \subsection{Methods Explored}
+    % \subsection{Demonstration System}
+    
+\section{Project Plan}
+    \subsection{Original Plan and Changes}
+    \textcolor{red}{TODO: All Original}
+
+    \subsection{Key Differences}
+    \textcolor{red}{TODO: All Key}
+
+    
+\section{Conclusion}
+    \subsection{Key Learning Obtained/Findings}
+    \textcolor{red}{TODO: All Key}
+
+    \subsection{Future Work}
+    \textcolor{red}{TODO: All Future}
+
+    \subsection{Closing Statements}
+    \textcolor{red}{TODO: All Closing Statements}
+
+    "Example Reference" \cite{adams1995hitchhiker} Second example
+
+\bibliographystyle{vancouver}
+\bibliography{bibliography.bib}
+
+\end{document}
