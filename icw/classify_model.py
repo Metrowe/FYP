@@ -9,9 +9,6 @@ class_names = ['antelope','bat','beaver','blue+whale','bobcat','buffalo','chihua
 def createModel():
 	model = keras.models.Sequential()
 	model.add(keras.layers.Conv2D(filters=16,kernel_size=2,padding="same",activation="relu",input_shape=(200, 200, 3)))
-	# model.add(keras.layers.Conv2D(filters=16,kernel_size=2,padding="same",activation="relu",input_shape=(100, 100, 3)))
-	# model.add(keras.layers.Conv2D(filters=16,kernel_size=2,padding="same",activation="relu",input_shape=(50, 50, 3)))
-	# model.add(keras.layers.Conv2D(filters=16,kernel_size=2,padding="same",activation="relu",input_shape=(32, 32, 3)))
 	model.add(keras.layers.MaxPooling2D(pool_size=2))
 	model.add(keras.layers.Conv2D(filters=32,kernel_size=2,padding="same",activation="relu"))
 	model.add(keras.layers.MaxPooling2D(pool_size=2))
@@ -21,10 +18,8 @@ def createModel():
 	model.add(keras.layers.Flatten())
 	model.add(keras.layers.Dense(500,activation="relu"))
 	model.add(keras.layers.Dropout(0.2))
-	# model.add(keras.layers.Dense(4,activation="softmax"))
 
 	# First argument is number of output classes
-	# model.add(keras.layers.Dense(10,activation="softmax"))
 	model.add(keras.layers.Dense(50,activation="softmax"))
 
 	# Compile the model with settings
@@ -48,14 +43,12 @@ def makeSquare(image,padColour):
 	pad = int( ( abs(height - width) ) / 2 )
 
 	if height > width:
-		# cv2.ccopyMakeBorder(image,top,bottom,left,right)
 		image = cv2.copyMakeBorder(image,0,0,pad,pad,cv2.BORDER_CONSTANT,value=padColour)
 	elif width > height:
 		image = cv2.copyMakeBorder(image,pad,pad,0,0,cv2.BORDER_CONSTANT,value=padColour)
 
 	return image
 
-# def formatImage(image,padColour,finalSize):
 def formatImage(image):
 	finalSize = 200
 	padColour = [0,0,0]
@@ -68,32 +61,3 @@ def formatImage(image):
 	normalised = resized / 255.0
 
 	return normalised
-
-# def formatImage(image):
-# 	# Convert from openCVs default BGR to RGB
-# 	# tempImage = cv2.cvtColor(image.copy(), cv2.COLOR_BGR2RGB)
-# 	tempImage = image.copy()
-	
-# 	# Resize image to same as input samples
-# 	tempImage = cv2.resize(tempImage, (32, 32))
-
-# 	# Get in range of zero to one so 
-# 	tempImage = tempImage / 255.0
-
-# 	# print(tempImage)
-
-# 	# Invert image
-# 	# tempImage = cv2.bitwise_not(tempImage)
-
-# 	# Get values in range 0 - 1
-# 	# tempImage = tempImage / 255.0
-
-# 	return tempImage
-
-# # For test purposes only
-# def formatImageAndSave(image):
-# 	cv2.imwrite( "/images/beforeFormat.jpg", image )
-# 	resultImage = formatImage(image)
-# 	cv2.imwrite( "/images/afterFormat.jpg", resultImage )
-
-# 	return resultImage

@@ -23,7 +23,6 @@ function populateGallery(imageList)
 		row.innerHTML = "";
 
 		imageList.forEach(function (image) {
-			// console.log(path);
 	  		row.innerHTML = row.innerHTML + getImageMarkup(image.path,image.label);
 		});
 	}
@@ -53,14 +52,12 @@ async function myuploadsAttempt()
 	formData.append('category', type);
 	formData.append('label', label);
 
-	// console.log('label: ' + label);
 
 	let response = await getJsonData(url,{method: 'POST', headers: headers, body: formData});
 
 	if( Array.isArray(response) )
 	{
 		let imageList = response.filter(result => result.path != null && result.label != null);
-		// let pathList = results.map(result => result.path).filter(path => path != null);
 		populateGallery(imageList)
 	}
 	else
@@ -74,9 +71,6 @@ async function myuploadsAttempt()
 
 		displayError(errorMessage);
 	}
-
-	console.log(url);
-	console.log(response);
 }
 
 myuploadsAttempt()

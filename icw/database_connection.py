@@ -7,26 +7,11 @@ from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-# from sqlalchemy import create_engine
-
 from sqlalchemy.orm import scoped_session
-# from sqlalchemy.orm import sessionmaker
 
 import database_classes as table
 
 import configuration_strings as config
-
-# import database_modify as dbModify
-
-# 'mysql+pymysql://' (the dialect and driver).
-# 'student:datacamp' (the username and password).
-# '@courses.csrrinzqubik.us-east-1.rds.amazonaws.com:3306/' (the host and port).
-# 'census' (the database name).
-
-# engine = create_engine('mysql+pymysql://'+'student:datacamp'+'@courses.csrrinzqubik.us-east-1.rds.amazonaws.com:3306/'+'census')
-# engine = create_engine('mysql+pymysql://'+'metrowe:navybottle'+'@127.0.0.1:3306/'+'icwdata')
-# Base = declarative_base()
-
 
 engine = create_engine(config.databaseConnection)
 

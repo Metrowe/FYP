@@ -19,19 +19,6 @@ def getAuthorization(requestHeaders):
 
 	return token
 
-
-
-# def allNotNone(items):
-# 	results = list
-
-# 	for arg in expected:
-# 		if arg in requestValues.keys() and isinstance(requestValues[arg], str):
-# 			results.append(requestValues[arg])
-# 		else:
-# 			results.append(None)
-
-# 	return tuple(results)
-
 def responseError(text):
 	return {
 		'error': text
@@ -48,14 +35,12 @@ def stringToBool(text):
 	return result
 
 def validString(text):
-	# if not (' ' in text) and not ('	' in text)and text != '':
 	if not (' ' in text) and not ('	' in text)and text != '':
 		return True
 	else:
 		return False
 
 def getValidString(text):
-	# if not (' ' in text) and not ('	' in text)and text != '':
 	if not (' ' in text) and not ('	' in text)and text != '':
 		return text
 	else:

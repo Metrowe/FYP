@@ -7,23 +7,10 @@ function clickTest()
 
 function getBaseUrl()
 {
-
-	console.log('href: ' + window.location.href);
-	console.log('path: ' + window.location.pathname);
-	// 'a nice string'.indexOf('nice') !== -1
-
-	// window.location.href.indexOf(window.location.pathname)
-
 	if(baseUrl == null)
 	{
-		// baseUrl = window.location.href.slice(0, window.location.pathname.length * -1) + '/';
 		baseUrl = window.location.href.slice(0, window.location.href.indexOf(window.location.pathname)) + '/';
 	}
-
-	console.log('bUrl: ' + baseUrl);
-
-
-	// baseUrl = 'http://127.0.0.1:5000/';
 
 	return baseUrl;
 }
@@ -52,21 +39,6 @@ function setToken(result)
 	{
 		return false;
 	}
-	// else
-	// {
-	// 	sessionStorage.token = null;
-	// }
-
-
-
-	// var token = null;
-
-	// if ("token" in sessionStorage) 
-	// {
- //    	token = sessionStorage.token;
-	// }
-
-	// return token;
 }
 
 function deleteToken()
@@ -78,12 +50,8 @@ function deleteToken()
 }
 //## END TOKEN MANAGEMENT ##//
 
-
-
-
 function adjustNavbar()
 {
-	// console.log('entered adjust navbar')
 	if (getToken() != null) 
 	{
     	document.getElementById('nav-myuploads').style.display = 'block';
@@ -128,7 +96,6 @@ function validString(str)
 	{
 		return false;
 	}
-	// ||
 }
 
 function displayError(str)
@@ -161,7 +128,6 @@ function hideError()
 	}
 }
 
-// ###################################################################
 function displayElement(id,str)
 {
 	let element = document.getElementById(id);
@@ -213,14 +179,13 @@ function hideElement(id)
 		console.log('NO ELEMENT FOUND');
 	}
 }
-// ###################################################################
 
 function getCheckedRadioValue(...args) 
 {
 	let checked = null;
+	//args is an Array
+	//You can pass this array as parameters to another function
 	args.forEach(function(element) {
-  		// console.log(element);
-  		// console.log(element.checked);
   		if(element.checked)
   		{
   			checked = element.value;
@@ -228,18 +193,12 @@ function getCheckedRadioValue(...args)
 	});
 
 	return checked
-
-     //args is an Array
-     // console.log(args);
-     // //You can pass this array as parameters to another function
-     // console.log(...args);
 }
 
 function logout()
 {
 	deleteToken();
 	window.location.href = getBaseUrl() + '';
-	// adjustNavbar();
 }
 
 adjustNavbar();

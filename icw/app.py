@@ -325,10 +325,6 @@ def setApprovalRequest():
 	submissionId, approval, newLabel = web_handling.getArgs(request.values, 'submissionId', 'approval', 'newLabel')
 	approval = web_handling.stringToBool(approval)
 
-
-	# postArgs = (request.values).to_dict()
-	# headers = dict(request.headers)
-
 	response = web_handling.responseError('Setapproval request invalid')
 
 	if token != None:
@@ -337,10 +333,6 @@ def setApprovalRequest():
 		if payload != None and 'userid' in payload.keys() and dbQuery.idUserAdmin(payload['userid']):
 
 			if submissionId != None and approval != None:
-
-				# if newLabel != None and newLabel != '':
-				# 	newLabel = postArgs['newLabel']
-
 				submission = dbModify.updateModApproval(submissionId,approval,newLabel)
 
 				if submission != None:
@@ -350,9 +342,6 @@ def setApprovalRequest():
 
 @app.route('/deletesubmissionrequest', methods=['POST'])
 def deleteSubmissionRequest():
-	# postArgs =(request.values).to_dict()
-	# headers = dict(request.headers)
-
 	token = web_handling.getAuthorization(request.headers)
 	submissionId, newLabel = web_handling.getArgs(request.values, 'submissionId', 'newLabel')
 

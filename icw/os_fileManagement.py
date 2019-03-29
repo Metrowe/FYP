@@ -5,8 +5,6 @@ import time
 
 import cv2
 
-
-
 def deleteFile(path):
 	success = False
 	if os.path.exists(path):

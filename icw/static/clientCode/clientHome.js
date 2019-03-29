@@ -1,6 +1,3 @@
-console.log(window.location.pathname)
-console.log(window.location.href)
-
 let submissionToken = null;
 
 //If no options set as null
@@ -33,8 +30,6 @@ async function uploadAttempt()
 	permissionDataset = getCheckedRadioValue(datasetinput1,datasetinput2);
 
 	hideElement('message-display');
-	
-	console.log('submissionToken',submissionToken);
 
 	let heading = document.getElementById('upload-heading');
 	let inputImage = document.getElementById('upload-input');
@@ -68,14 +63,6 @@ async function uploadAttempt()
 		response = await getJsonData(url,{method: 'POST', headers: headers, body: formData});
 	}
 
-	// console.log('response = ', response);
-	// console.log('inputPath' in response);
-	// console.log('inputPath' in response);
-	// console.log('inputPath' in response);
-	// console.log('inputPath' in response);
-
-	// console.log('response = ', response.inputPath);
-
 	if( response != null && 'inputPath' in response && 'outputPath' in response && 'summaryPath' in response && 'label' in response && 'submissionToken' in response)
 	{
 		inputImage.src = response.inputPath;
@@ -86,9 +73,6 @@ async function uploadAttempt()
 		submissionToken = response.submissionToken;
 
 		displayElement('feedback-form',null);
-
-		console.log(url);
-		console.log(response);
 	}
 	else
 	{
@@ -146,7 +130,6 @@ async function feedbackAttempt()
 			formData.append('commentResult', commentResult);
 			formData.append('commentSite', commentSite);
 
-
 			let response = await getJsonData(url,{method: "POST", body: formData});
 
 			if (response != null && "error" in response) 
@@ -159,11 +142,7 @@ async function feedbackAttempt()
 				submissionToken = null;
 				hideElement('feedback-form');
 				displayElement('message-display','Thanks for your feedback');
-				// document.getElementById('feedback-form').style.display = 'none';
 			}
-
-			console.log(url);
-			console.log(response);
 		}
 		else
 		{
@@ -196,20 +175,3 @@ function toggleRateExample()
 		hideElement('example-rateIsolate');
 	}
 }
-
-// async function testget()
-// {
-// 	url = window.location.href + "testreq"
-// 	let testData = await getJsonData(url, null);
-
-// 	console.log(url);
-// 	console.log(testData);
-
-// 	// document.getElementById("profileAvatar").src = userData.avatar_url;	
-// }
-// window.location = "https://www.example.com";
-// console.log("ssadasdsasdasdsasdsasd");
-// testget();
-
-// sessionStorage.accessToken = "placeholderToken";
-// sessionStorage.temp = "canThisBeAccessed";

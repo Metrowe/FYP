@@ -1,11 +1,3 @@
-# from sqlalchemy import Integer, String, Boolean, Text
-# from sqlalchemy import Column, ForeignKey
-# from sqlalchemy.ext.declarative import declarative_base
-# from sqlalchemy.orm import relationship
-# from sqlalchemy import create_engine
-# from sqlalchemy.orm import sessionmaker
-# from sqlalchemy import func
-
 # Custom database imports
 from database_connection import Session
 import database_classes as table
@@ -59,20 +51,13 @@ def insertAdmin(username,password):
 
 def insertGuestSubmission(originalPath,isolatePath,summaryPath,animalLabel,permissionGallery,permissionDataset):
 	newSubmission = table.Submission(animalLabel=animalLabel,firstLabel=animalLabel, permissionGallery=permissionGallery, permissionDataset=permissionDataset, modApproval=False, modReviewed=False)
-	
-	print('sub,images type:',type(newSubmission.images))
-	print('sub length before:',len(newSubmission.images))
 
 	newSubmission.images.append(table.Image(type='original',path=originalPath))
 	newSubmission.images.append(table.Image(type='isolate',path=isolatePath))
 	newSubmission.images.append(table.Image(type='summary',path=summaryPath))
 
-	print('sub length after:',len(newSubmission.images))
-
-
 	Session.add(newSubmission)
 	success = safeCommit()
-	print('successvalue',success)
 
 	newSubmissionId = None
 	if success:

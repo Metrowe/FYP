@@ -13,22 +13,16 @@ function getImageMarkup(path,label)
 		</div>
 		`;
 }
-// style="background-color: rgba(255,255,0,255);
-// <img class="img-responsive border mx-auto d-block" src="${path}" width="100%">
-// 
-
 
 function populateGallery(imageList)
 {
 	let row = document.getElementById("galleryRow");
 
-	// if( Array.isArray(pathList) && pathList.length > 0 )
 	if( imageList.length > 0 )
 	{
 		row.innerHTML = "";
 
 		imageList.forEach(function (image) {
-			// console.log(path);
 	  		row.innerHTML = row.innerHTML + getImageMarkup(image.path,image.label);
 		});
 	}
@@ -37,26 +31,6 @@ function populateGallery(imageList)
 		row.innerHTML = "No results";
 	}
 }
-
-// async function initialGalleryContents(type,label)
-// {
-// 	let url = getBaseUrl() + "galleryImages";
-
-// 	let formData = new FormData();
-// 	formData.append('type', type);
-// 	formData.append('label', label);
-
-// 	let result = await getJsonData(url,{method: "POST", body: formData});
-
-// 	// let results = await getJsonData(url,null);
-
-// 	pathList = results.map(result => result.path);
-
-// 	populateGallery(pathList)
-
-// 	console.log(url);
-// 	console.log(results);
-// }
 
 async function galleryAttempt()
 {
@@ -77,17 +51,11 @@ async function galleryAttempt()
 	formData.append('category', type);
 	formData.append('label', label);
 
-	// console.log(type)
-	// console.log(label)
-
-	console.log('label: ' + label);
-
 	let response = await getJsonData(url,{method: "POST", body: formData});
 
 	if( Array.isArray(response) )
 	{
 		let imageList = response.filter(result => result.path != null && result.label != null);
-		// let pathList = results.map(result => result.path).filter(path => path != null);
 		populateGallery(imageList)
 	}
 	else
@@ -101,9 +69,6 @@ async function galleryAttempt()
 
 		displayError(errorMessage);
 	}
-
-	console.log(url);
-	console.log(response);
 }
 
 galleryAttempt()
