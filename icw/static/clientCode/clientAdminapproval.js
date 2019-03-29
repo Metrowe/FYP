@@ -6,7 +6,7 @@ function getSubmissionMarkup(submission)
 				<div class="col ">
 					<div class="row">
 						<div class="col-6 ">
-							<input onclick="setapprovalAttempt(true,${submission.id});" type="button" class="btn btn-primary btn-lg btn-block" value="Approve">
+							<input style="display:${submission.permissionGallery};" onclick="setapprovalAttempt(true,${submission.id});" type="button" class="btn btn-primary btn-lg btn-block" value="Approve">
 						</div>
 						<div class="col-6 ">
 							<input onclick="setapprovalAttempt(false,${submission.id});" type="button" class="btn btn-primary btn-lg btn-block" value="Deny">
@@ -89,6 +89,15 @@ function populatePage(submissionList)
 		row.innerHTML = "";
 
 		submissionList.forEach(function (submission) {
+			if (submission.permissionGallery)
+			{
+				submission.permissionGallery = 'block';
+			}
+			else
+			{
+				submission.permissionGallery = 'none';
+			}
+
 	  		row.innerHTML = row.innerHTML + getSubmissionMarkup(submission);
 		});
 	}
@@ -144,7 +153,7 @@ async function setapprovalAttempt(approval,submissionId)
 
 	let result = await getJsonData(url,{method: 'POST', headers: headers, body: formData});
 
-	if (results != null && 'message' in result)
+	if (result != null && 'message' in result)
 	{
 		console.log(result.message);
 
@@ -174,7 +183,7 @@ async function deleteSubmissionAttempt(submissionId)
 
 	let result = await getJsonData(url,{method: 'POST', headers: headers, body: formData});
 
-	if (results != null && 'message' in result)
+	if (result != null && 'message' in result)
 	{
 		console.log(result.message);
 

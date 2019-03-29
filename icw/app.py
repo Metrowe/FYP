@@ -281,6 +281,7 @@ def adminapprovalRequest():
 				summaryPath = next((image.path for image in submission.images if image.type == 'summary'), None)
 
 				label = submission.animalLabel
+				permissionGallery = submission.permissionGallery
 
 				rateClassify = None
 				rateIsolate = None
@@ -312,7 +313,8 @@ def adminapprovalRequest():
 					'rateIsolate': rateIsolate,\
 					'commentResult': commentResult,\
 					'commentSite': commentSite,\
-					'username': username\
+					'username': username,\
+					'permissionGallery': permissionGallery\
 				})
 
 	return jsonify(response)

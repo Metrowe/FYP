@@ -34,6 +34,7 @@ def idUserAdmin(id):
 def filterGalleryImages(category,label):
 	partialQuery = Session.query(table.Image)\
 	.join(table.Image,table.Submission.images)\
+	.filter(table.Submission.permissionGallery==True)\
 	.filter(table.Submission.modApproval==True)
 
 	if label != None:
@@ -73,7 +74,6 @@ def idSubmission(id):
 ### START ADMIN QUERIES ###
 def reviewSubmissions():
 	submissions = Session.query(table.Submission)\
-	.filter(table.Submission.permissionGallery==True)\
 	.filter(table.Submission.modReviewed==False).all() 
 
 	return submissions
