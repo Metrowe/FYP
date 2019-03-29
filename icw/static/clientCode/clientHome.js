@@ -57,38 +57,38 @@ async function uploadAttempt()
 	formData.append("permissionGallery", permissionGallery);
 	formData.append("permissionDataset", permissionDataset);
 
-	let result = null;
+	let response = null;
 
 	if(headers.Authorization == null)
 	{
-		result = await getJsonData(url,{method: "POST", body: formData});
+		response = await getJsonData(url,{method: "POST", body: formData});
 	}
 	else
 	{
-		result = await getJsonData(url,{method: 'POST', headers: headers, body: formData});
+		response = await getJsonData(url,{method: 'POST', headers: headers, body: formData});
 	}
 
-	// console.log('result = ', result);
-	// console.log('inputPath' in result);
-	// console.log('inputPath' in result);
-	// console.log('inputPath' in result);
-	// console.log('inputPath' in result);
+	// console.log('response = ', response);
+	// console.log('inputPath' in response);
+	// console.log('inputPath' in response);
+	// console.log('inputPath' in response);
+	// console.log('inputPath' in response);
 
-	// console.log('result = ', result.inputPath);
+	// console.log('response = ', response.inputPath);
 
-	if( 'inputPath' in result && 'outputPath' in result && 'summaryPath' in result && 'label' in result && 'submissionToken' in result)
+	if( response != null && 'inputPath' in response && 'outputPath' in response && 'summaryPath' in response && 'label' in response && 'submissionToken' in response)
 	{
-		inputImage.src = result.inputPath;
-		outputImage.src = result.outputPath;
-		label.textContent = result.label;
-		summaryImage.src = result.summaryPath;
+		inputImage.src = response.inputPath;
+		outputImage.src = response.outputPath;
+		label.textContent = response.label;
+		summaryImage.src = response.summaryPath;
 
-		submissionToken = result.submissionToken;
+		submissionToken = response.submissionToken;
 
 		displayElement('feedback-form',null);
 
 		console.log(url);
-		console.log(result);
+		console.log(response);
 	}
 	else
 	{
@@ -100,9 +100,9 @@ async function uploadAttempt()
 
 		let errorMessage = 'Upload Failed';
 
-		if (result != null && 'error' in result) 
+		if (response != null && 'error' in response) 
 		{
-	    	errorMessage = result.error;
+	    	errorMessage = response.error;
 		}
 
 		displayError(errorMessage);
@@ -147,11 +147,11 @@ async function feedbackAttempt()
 			formData.append('commentSite', commentSite);
 
 
-			let result = await getJsonData(url,{method: "POST", body: formData});
+			let response = await getJsonData(url,{method: "POST", body: formData});
 
-			if (result != null && "error" in result) 
+			if (response != null && "error" in response) 
 			{
-		    	errorMessage = result.error;
+		    	errorMessage = response.error;
 		    	displayError(errorMessage);
 			}
 			else
@@ -163,7 +163,7 @@ async function feedbackAttempt()
 			}
 
 			console.log(url);
-			console.log(result);
+			console.log(response);
 		}
 		else
 		{

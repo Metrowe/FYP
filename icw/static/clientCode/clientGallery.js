@@ -82,11 +82,11 @@ async function galleryAttempt()
 
 	console.log('label: ' + label);
 
-	let results = await getJsonData(url,{method: "POST", body: formData});
+	let response = await getJsonData(url,{method: "POST", body: formData});
 
-	if( Array.isArray(results) )
+	if( Array.isArray(response) )
 	{
-		let imageList = results.filter(result => result.path != null && result.label != null);
+		let imageList = response.filter(result => result.path != null && result.label != null);
 		// let pathList = results.map(result => result.path).filter(path => path != null);
 		populateGallery(imageList)
 	}
@@ -94,16 +94,16 @@ async function galleryAttempt()
 	{
 		let errorMessage = 'Search Failed';
 
-		if (results != null && "error" in results) 
+		if (response != null && "error" in response) 
 		{
-	    	errorMessage = results.error;
+	    	errorMessage = response.error;
 		}
 
 		displayError(errorMessage);
 	}
 
 	console.log(url);
-	console.log(results);
+	console.log(response);
 }
 
 galleryAttempt()

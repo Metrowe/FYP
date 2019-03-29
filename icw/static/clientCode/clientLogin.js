@@ -44,13 +44,13 @@ async function loginAttempt()
 		formData.append('username', usernameElement.value);
 		formData.append('password', passwordElement.value);
 
-		let result = await getJsonData(url,{method: "POST", body: formData});
+		let response = await getJsonData(url,{method: "POST", body: formData});
 
 		console.log(url);
-		console.log(result);
+		console.log(response);
 
 		// TODO: check for errors
-		if( setToken(result) )
+		if( setToken(response) )
 		{
 			window.location.href = getBaseUrl() + '';
 		}
@@ -59,9 +59,9 @@ async function loginAttempt()
 			// let errorElement = document.getElementById('error-display');
 			let errorMessage = 'Login Failed';
 
-			if (results != null && "error" in result) 
+			if (response != null && "error" in response) 
 			{
-		    	errorMessage = result.error;
+		    	errorMessage = response.error;
 			}
 
 			displayError(errorMessage);
@@ -98,8 +98,8 @@ async function loginAttempt()
 // 	formData.append('password', passwordElement.value);
 // 	formData.append('confirmpassword', confirmpasswordElement.value);
 
-// 	let result = await getJsonData(url,{method: "POST", body: formData});
+// 	let response = await getJsonData(url,{method: "POST", body: formData});
 
 // 	console.log(url);
-// 	console.log(result);
+// 	console.log(response);
 // }

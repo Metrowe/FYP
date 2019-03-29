@@ -18,12 +18,12 @@ async function signupAttempt()
 			formData.append('password', passwordElement.value);
 			formData.append('confirmpassword', confirmpasswordElement.value);
 
-			let result = await getJsonData(url,{method: "POST", body: formData});
+			let response = await getJsonData(url,{method: "POST", body: formData});
 
 			console.log(url);
-			console.log(result);
+			console.log(response);
 
-			if( setToken(result) )
+			if( setToken(response) )
 			{
 				window.location.href = getBaseUrl() + '';
 			}
@@ -32,9 +32,9 @@ async function signupAttempt()
 				// let errorElement = document.getElementById('error-display');
 				let errorMessage = 'Signup Failed';
 
-				if (results != null && "error" in result) 
+				if (response != null && "error" in response) 
 				{
-			    	errorMessage = result.error;
+			    	errorMessage = response.error;
 				}
 
 				displayError(errorMessage);
@@ -73,13 +73,13 @@ async function signupAttempt()
 // 		formData.append('username', usernameElement.value);
 // 		formData.append('password', passwordElement.value);
 
-// 		let result = await getJsonData(url,{method: "POST", body: formData});
+// 		let response = await getJsonData(url,{method: "POST", body: formData});
 
 // 		console.log(url);
-// 		console.log(result);
+// 		console.log(response);
 
 // 		// TODO: check for errors
-// 		if( setToken(result) )
+// 		if( setToken(response) )
 // 		{
 // 			// window.location.href = getBaseUrl() + '';
 // 		}
@@ -88,9 +88,9 @@ async function signupAttempt()
 // 			let errorElement = document.getElementById('error-display');
 // 			let errorMessage = 'Login Failed';
 
-// 			if ("error" in result) 
+// 			if ("error" in response) 
 // 			{
-// 		    	errorMessage = result.error;
+// 		    	errorMessage = response.error;
 // 			}
 
 // 			errorElement.innerHTML = errorMessage;

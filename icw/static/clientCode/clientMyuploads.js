@@ -2,8 +2,8 @@ function getImageMarkup(path,label)
 {
 	return `
 		<div class="col-md-4 theme-colour-c">
-			<div style="margin:3%" class=" card mb-4 ">
-				<img style="margin:0%" class=" rounded " src="${path}" alt="Display Image" width="100%">
+			<div style="margin:3%">
+				<img class="img-responsive border mx-auto d-block" src="${path}" width="100%" ">
 			</div>
 			<div class="card-body">
 				<p class="card-text text-center">
@@ -55,11 +55,11 @@ async function myuploadsAttempt()
 
 	// console.log('label: ' + label);
 
-	let results = await getJsonData(url,{method: 'POST', headers: headers, body: formData});
+	let response = await getJsonData(url,{method: 'POST', headers: headers, body: formData});
 
-	if( Array.isArray(results) )
+	if( Array.isArray(response) )
 	{
-		let imageList = results.filter(result => result.path != null && result.label != null);
+		let imageList = response.filter(result => result.path != null && result.label != null);
 		// let pathList = results.map(result => result.path).filter(path => path != null);
 		populateGallery(imageList)
 	}
@@ -67,16 +67,16 @@ async function myuploadsAttempt()
 	{
 		let errorMessage = 'Search Failed';
 
-		if (results != null && "error" in results) 
+		if (response != null && "error" in response) 
 		{
-	    	errorMessage = results.error;
+	    	errorMessage = response.error;
 		}
 
 		displayError(errorMessage);
 	}
 
 	console.log(url);
-	console.log(results);
+	console.log(response);
 }
 
 myuploadsAttempt()
