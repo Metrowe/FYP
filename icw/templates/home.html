@@ -31,23 +31,34 @@
 				</nav>
 				<br>
 
-		 		<div class="container d-flex justify-content-between" style="display:block;">
+		 		<div class="container">
+		 			<div class="row">
+		 				<div class="col">
+		 					<h3 class="text-center">IC Wildlife</h3>
+		 				</div>
+		 			</div>
 					<div class="row">
 						<!-- Example and result box -->
 						<div class="col-sm-8 theme-colour-b">
-							<div id="upload-heading" class="text-center">Example</div>
+							<div id="upload-heading" class="text-center">Example Images</div>
+							<br>
 							<div class="row">
 								<div class="col">
 									<div class="text-center">Uploaded Image</div>
-									<img id="upload-input" class="img-responsive border rounded mx-auto d-block" src="static/images/examples/antelope-input-example.jpg" alt="loading..." width="100%">
+									<img id="upload-input" class="img-responsive border rounded mx-auto d-block" src="static/images/examples/walrus-input-example.png" alt="loading..." width="100%">
+								</div>
+								<div class="col">
+									<div class="text-center">Summary</div>
+									<img id="upload-summary" class="img-responsive border rounded mx-auto d-block" src="static/images/examples/walrus-summary-example.png" alt="loading..." width="100%">
 								</div>
 								<div class="col">
 									<div class="text-center">Result</div>
-									<img id="upload-output" class="img-responsive border rounded mx-auto d-block" src="static/images/examples/antelope-output-example.jpg" alt="loading..." width="100%">
-									<div class="text-center">Animal: <div id="upload-label">Antelope</div></div>
+									<img id="upload-output" class="img-responsive border rounded mx-auto d-block" src="static/images/examples/walrus-output-example.png" alt="loading..." width="100%">
+									<div class="text-center"><b>Animal: <div id="upload-label"><i>Walrus</i></div></b></div>
 								</div>
 							</div>
-							<p>Bootstrap is the most popular HTML, CSS, and JS framework for developing responsive, mobile-first projects on the web.</p> 
+							<br>
+							<p>Upload a photo and icwildlife will attempt to identify what animal is in the photo, for a full list of animals that icwildlife can identify check the about page. Icwildlife will also attempt to remove the background of the photo and make it transparent so the image can be downloaded and placed on different backdrops. The summary image is made during the background removal process to help with analysis.</p> 
 						</div>
 						<!-- Submit and question box -->
 						<div class="col-sm-4 theme-colour-c">
@@ -79,7 +90,7 @@
 
 				<br>
 				<!-- This div/section isn't included if an image hasn't been successfully submitted -->
-				<div id='feedback-form' class="container " style="display:none;">
+				<div id='feedback-form' class="container " style="display:block;">
 
 					<h3 class="text-center">Feedback Form</h3>
 					<font color="red">*Required fields</font>
@@ -97,14 +108,62 @@
 					<br>
 					<!-- Second feedback row -->
 					<div class="row border rounded theme-colour-b ">
-						<div class="col-sm-6 ">
-							<p><font color="red">*</font>How effective was the background removal?</p>
-						</div>
-						<div class="col-sm-6 ">
-							<input id='feedback-rateisolate1' type="radio" name="rateIsolate" value="perfect"> Perfect<br>
-							<input id='feedback-rateisolate2' type="radio" name="rateIsolate" value="good"> Good<br>
-							<input id='feedback-rateisolate3' type="radio" name="rateIsolate" value="poor"> Poor<br>
-							<input id='feedback-rateisolate4' type="radio" name="rateIsolate" value="failure"> Failure
+						<div class="col">
+							<div class="row">
+								<div class="col-sm-6 ">
+									<p><font color="red">*</font>How effective was the background removal?</p>
+									<a onclick="toggleRateExample();" class="nav-item nav-link link-active " href="#">Click to show examples</a>
+								</div>
+								<div class="col-sm-6 ">
+									<input id='feedback-rateisolate1' type="radio" name="rateIsolate" value="perfect"> Perfect<br>
+									<input id='feedback-rateisolate2' type="radio" name="rateIsolate" value="good"> Good<br>
+									<input id='feedback-rateisolate3' type="radio" name="rateIsolate" value="poor"> Poor<br>
+									<input id='feedback-rateisolate4' type="radio" name="rateIsolate" value="failure"> Failure
+								</div>
+							</div>
+							<div id="example-rateIsolate" class="row" style="display:none;">
+
+								<div class="col-md-3 col-sm-6">
+									<img class="img-responsive border mx-auto d-block" src="static/images/examples/dog-perfect-example.png" alt="loading..." width="100%">
+									<div class="text-center">Perfect</div>
+								</div>
+								<div class="col-md-3 col-sm-6">
+									<img class="img-responsive border mx-auto d-block" src="static/images/examples/dog-good-example.png" alt="loading..." width="100%">									
+									<div class="text-center">Good</div>
+								</div>
+								<div class="col-md-3 col-sm-6">
+									<img class="img-responsive border mx-auto d-block" src="static/images/examples/dog-poor-example.png" alt="loading..." width="100%">
+									<div class="text-center">Poor</div>
+								</div>
+								<div class="col-md-3 col-sm-6">
+									<img class="img-responsive border mx-auto d-block" src="static/images/examples/dog-failure-example.png" alt="loading..." width="100%">
+									<div class="text-center">Failure</div>
+								</div>
+
+
+
+								<!-- <div class="col-md-3 col-sm-6">
+									<img class="img-responsive border rounded mx-auto d-block" src="static/images/examples/dog-perfect-example.png" alt="not found">
+									<div class="text-center" width="25%">Perfect</div>
+								</div>
+								<div class="col-md-3 col-sm-6">
+									<img class="img-responsive border rounded mx-auto d-block" src="static/images/examples/dog-good-example.png" alt="not found">
+									<div class="text-center" width="25%">Good</div>
+								</div>
+								<div class="col-md-3 col-sm-6">
+									<img class="img-responsive border rounded mx-auto d-block" src="static/images/examples/dog-poor-example.png" alt="not found">
+									<div class="text-center" width="25%">Poor</div>
+								</div>
+								<div class="col-md-3 col-sm-6">
+									<img class="img-responsive border rounded mx-auto d-block" src="static/images/examples/dog-failure-example.png" alt="not found">
+									<div class="text-center" width="25%">Failure</div>
+								</div> -->
+
+
+
+
+
+							</div>
 						</div>
 					</div>
 					<br>

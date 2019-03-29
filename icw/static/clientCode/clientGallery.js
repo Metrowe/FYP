@@ -2,8 +2,8 @@ function getImageMarkup(path,label)
 {
 	return `
 		<div class="col-md-4 theme-colour-c">
-			<div style="margin:3%" class=" card mb-4 ">
-				<img style="margin:0%" class=" rounded " src="${path}" alt="Display Image" width="100%">
+			<div style="margin:3%">
+				<img class="img-responsive border mx-auto d-block" src="${path}" width="100%" ">
 			</div>
 			<div class="card-body">
 				<p class="card-text text-center">
@@ -13,6 +13,10 @@ function getImageMarkup(path,label)
 		</div>
 		`;
 }
+// style="background-color: rgba(255,255,0,255);
+// <img class="img-responsive border mx-auto d-block" src="${path}" width="100%">
+// 
+
 
 function populateGallery(imageList)
 {

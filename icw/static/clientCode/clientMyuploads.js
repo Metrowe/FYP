@@ -67,7 +67,7 @@ async function myuploadsAttempt()
 	{
 		let errorMessage = 'Search Failed';
 
-		if ("error" in results) 
+		if (results != null && "error" in results) 
 		{
 	    	errorMessage = results.error;
 		}

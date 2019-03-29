@@ -32,7 +32,7 @@ async function signupAttempt()
 				// let errorElement = document.getElementById('error-display');
 				let errorMessage = 'Signup Failed';
 
-				if ("error" in result) 
+				if (results != null && "error" in result) 
 				{
 			    	errorMessage = result.error;
 				}

@@ -39,11 +39,13 @@ async function uploadAttempt()
 	let heading = document.getElementById('upload-heading');
 	let inputImage = document.getElementById('upload-input');
 	let outputImage = document.getElementById('upload-output');
+	let summaryImage = document.getElementById('upload-summary');
 	let label = document.getElementById('upload-label');
 	
 	heading.textContent = "Your upload"
 	inputImage.src = "";
 	outputImage.src = "";
+	summaryImage.src = "";
 	label.textContent = "loading...";
 
 	//prepare get jsondata
@@ -74,11 +76,12 @@ async function uploadAttempt()
 
 	// console.log('result = ', result.inputPath);
 
-	if( 'inputPath' in result && 'outputPath' in result && 'label' in result && 'submissionToken' in result)
+	if( 'inputPath' in result && 'outputPath' in result && 'summaryPath' in result && 'label' in result && 'submissionToken' in result)
 	{
 		inputImage.src = result.inputPath;
 		outputImage.src = result.outputPath;
 		label.textContent = result.label;
+		summaryImage.src = result.summaryPath;
 
 		submissionToken = result.submissionToken;
 
@@ -89,14 +92,15 @@ async function uploadAttempt()
 	}
 	else
 	{
-		inputImage.src = 'static/images/examples/antelope-input-example.jpg';
-		outputImage.src = 'static/images/examples/antelope-output-example.jpg';
-		label.textContent = 'Antelope'
-		heading.textContent = 'Example'
+		inputImage.src = 'static/images/examples/walrus-input-example.png';
+		outputImage.src = 'static/images/examples/walrus-output-example.png';
+		summaryImage.src = 'static/images/examples/walrus-summary-example.png';
+		label.textContent = 'Walrus';
+		heading.textContent = 'Example';
 
 		let errorMessage = 'Upload Failed';
 
-		if ('error' in result) 
+		if (result != null && 'error' in result) 
 		{
 	    	errorMessage = result.error;
 		}
@@ -145,7 +149,7 @@ async function feedbackAttempt()
 
 			let result = await getJsonData(url,{method: "POST", body: formData});
 
-			if ("error" in result) 
+			if (result != null && "error" in result) 
 			{
 		    	errorMessage = result.error;
 		    	displayError(errorMessage);
@@ -172,20 +176,39 @@ async function feedbackAttempt()
 	}
 }
 
+var rateVisible = null;
 
-
-async function testget()
+function toggleRateExample()
 {
-	url = window.location.href + "testreq"
-	let testData = await getJsonData(url, null);
+	if(rateVisible == null)
+	{
+		rateVisible = false;
+	}
 
-	console.log(url);
-	console.log(testData);
+	rateVisible = !rateVisible;
 
-	// document.getElementById("profileAvatar").src = userData.avatar_url;	
+	if(rateVisible)
+	{
+		displayFlexElement('example-rateIsolate');
+	}
+	else
+	{
+		hideElement('example-rateIsolate');
+	}
 }
+
+// async function testget()
+// {
+// 	url = window.location.href + "testreq"
+// 	let testData = await getJsonData(url, null);
+
+// 	console.log(url);
+// 	console.log(testData);
+
+// 	// document.getElementById("profileAvatar").src = userData.avatar_url;	
+// }
 // window.location = "https://www.example.com";
-console.log("ssadasdsasdasdsasdsasd");
+// console.log("ssadasdsasdasdsasdsasd");
 // testget();
 
 // sessionStorage.accessToken = "placeholderToken";

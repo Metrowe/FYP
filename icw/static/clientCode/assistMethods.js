@@ -181,6 +181,25 @@ function displayElement(id,str)
 	}
 }
 
+function displayFlexElement(id,str)
+{
+	let element = document.getElementById(id);
+
+	if(element != null)
+	{
+		element.style.display = 'flex';
+
+		if(str != null)
+		{
+			element.innerHTML = str;
+		}
+	}
+	else
+	{
+		console.log('NO ELEMENT FOUND');
+	}
+}
+
 function hideElement(id)
 {
 	let element = document.getElementById(id);

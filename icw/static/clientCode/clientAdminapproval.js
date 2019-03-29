@@ -113,7 +113,7 @@ async function adminapprovalAttempt()
 	{
 		let errorMessage = 'Search Failed';
 
-		if ("error" in results) 
+		if (results != null && "error" in results) 
 		{
 	    	errorMessage = results.error;
 		}
@@ -144,7 +144,7 @@ async function setapprovalAttempt(approval,submissionId)
 
 	let result = await getJsonData(url,{method: 'POST', headers: headers, body: formData});
 
-	if ('message' in result)
+	if (results != null && 'message' in result)
 	{
 		console.log(result.message);
 
@@ -155,7 +155,7 @@ async function setapprovalAttempt(approval,submissionId)
 	{
 		let errorMessage = 'Set Approval Failed';
 
-		if ('error' in result) 
+		if (results != null && 'error' in result) 
 		{
 	    	errorMessage = result.error;
 		}
@@ -174,7 +174,7 @@ async function deleteSubmissionAttempt(submissionId)
 
 	let result = await getJsonData(url,{method: 'POST', headers: headers, body: formData});
 
-	if ('message' in result)
+	if (results != null && 'message' in result)
 	{
 		console.log(result.message);
 
@@ -185,7 +185,7 @@ async function deleteSubmissionAttempt(submissionId)
 	{
 		let errorMessage = 'Delete Submission Failed';
 
-		if ('error' in result) 
+		if (results != null && 'error' in result) 
 		{
 	    	errorMessage = result.error;
 		}
