@@ -43,7 +43,13 @@ def getSuperpixelsContours(image,algorithm,arg1,arg2):
 	mask = cv2.dilate(mask,shape)
 	mask_inv = cv2.bitwise_not(mask)
 	newmask = mask_inv
-	contours, hierarchy = cv2.findContours(newmask,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+
+	contourTuple = cv2.findContours(newmask,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+
+	if len(contourTuple) == 3:
+		_, contours, _ = contourTuple
+	else:
+		contours, _ = contourTuple
 
 	return contours
 

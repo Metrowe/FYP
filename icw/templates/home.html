@@ -54,11 +54,12 @@
 								<div class="col">
 									<div class="text-center">Result</div>
 									<img id="upload-output" class="img-responsive border rounded mx-auto d-block" src="static/images/examples/walrus-output-example.png" alt="loading..." width="100%">
-									<div class="text-center"><b>Animal: <div id="upload-label"><i>Walrus</i></div></b></div>
+									<div class="text-center"><b>Animal: <div id="upload-label">Walrus</div></b></div>
 								</div>
 							</div>
 							<br>
 							<p>Upload a photo and icwildlife will attempt to identify what animal is in the photo, for a full list of animals that icwildlife can identify check the about page. Icwildlife will also attempt to remove the background of the photo and make it transparent so the image can be downloaded and placed on different backdrops. The summary image is made during the background removal process to help with analysis.</p> 
+							<p>Processing takes ~15-20 seconds.</p> 
 						</div>
 						<!-- Submit and question box -->
 						<div class="col-sm-4 theme-colour-c">
@@ -90,7 +91,7 @@
 
 				<br>
 				<!-- This div/section isn't included if an image hasn't been successfully submitted -->
-				<div id='feedback-form' class="container " style="display:block;">
+				<div id='feedback-form' class="container " style="display:none;">
 
 					<h3 class="text-center">Feedback Form</h3>
 					<font color="red">*Required fields</font>
