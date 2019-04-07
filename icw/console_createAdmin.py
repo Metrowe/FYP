@@ -1,10 +1,6 @@
 import sys
 
-from database_connection import Session
-import database_classes as table
-import database_query as dbQuery
 import database_modify as dbModify
-
 import console_argv
 
 def main():

@@ -1,18 +1,18 @@
 .theme-colour-a
 {
-	background-color:rgb(255, 189, 219);
+	background-color:rgb(255, 204, 231);
 	color:Black;
 }
 
 .theme-colour-b
 {
-	background-color:rgb(255, 204, 231);
+	background-color:rgb(245, 223, 251);
 	color:Black;
 }
 
 .theme-colour-c
 {
-	background-color:rgb(245, 223, 251);
+	background-color:rgb(178, 222, 255);
 	color:Black;
 
 }
@@ -44,3 +44,10 @@
 a:hover, a:active {
   color:Black;
 }
+
+/*Originals */
+/*background-color:rgb(255, 189, 219);
+background-color:rgb(255, 204, 231);
+background-color:rgb(245, 223, 251);
+background-color:rgb(178, 222, 255);
+background-color:rgb(214, 246, 255);*/

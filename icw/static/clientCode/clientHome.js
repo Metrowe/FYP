@@ -1,24 +1,5 @@
 let submissionToken = null;
 
-//If no options set as null
-async function getJsonData(url, options)
-{
-	var returnData = null
-	await fetch(url, options)
-	.then((resp) => resp.json())
-	.then(function(data) 
-	{
-		returnData = data;
-		
-	})
-	.catch(function(error) 
-	{
-		console.log(error);
-	}); 
-
-	return returnData;
-}
-
 async function uploadAttempt()
 {
 	let galleryinputElement1 = document.getElementById('gallery-input1');
@@ -26,70 +7,125 @@ async function uploadAttempt()
 	let datasetinput1 = document.getElementById('dataset-input1');
 	let datasetinput2 = document.getElementById('dataset-input2');
 
-	permissionGallery = getCheckedRadioValue(galleryinputElement1,galleryinputElement2);
-	permissionDataset = getCheckedRadioValue(datasetinput1,datasetinput2);
+	let fileUploadElement = document.getElementById('upload-file');
+	let urlUploadElement = document.getElementById('upload-url');
 
-	hideElement('message-display');
+	// let uploadUrl = 'http://127.0.0.1:5000/static/images/original/2019-3-23_1-10-36_sLDNf.png';
+	// let uploadUrl = 'https://www.akc.org/wp-content/themes/akc/component-library/assets/img/welcome.jpg';
+	let uploadUrl = urlUploadElement.value;
 
-	let heading = document.getElementById('upload-heading');
-	let inputImage = document.getElementById('upload-input');
-	let outputImage = document.getElementById('upload-output');
-	let summaryImage = document.getElementById('upload-summary');
-	let label = document.getElementById('upload-label');
-	
-	heading.textContent = "Your upload"
-	inputImage.src = "";
-	outputImage.src = "";
-	summaryImage.src = "";
-	label.textContent = "loading...";
+	let uploadFile = null;
 
-	//prepare get jsondata
-	url = getBaseUrl() + "uploadRequest";
-
-	let headers = { 'Authorization': getToken() };
-	let formData = new FormData();
-	formData.append("image", document.getElementById("upload-file").files[0]);
-	formData.append("permissionGallery", permissionGallery);
-	formData.append("permissionDataset", permissionDataset);
-
-	let response = null;
-
-	if(headers.Authorization == null)
+	if(fileUploadElement.files[0] != null)
 	{
-		response = await getJsonData(url,{method: "POST", body: formData});
+		uploadFile = fileUploadElement.files[0];
+		console.log(uploadFile);
+		console.log('file attached');
 	}
-	else
+	else if(validString(uploadUrl))
+	// else if(validString(usernameElement.value))
 	{
-		response = await getJsonData(url,{method: 'POST', headers: headers, body: formData});
-	}
-
-	if( response != null && 'inputPath' in response && 'outputPath' in response && 'summaryPath' in response && 'label' in response && 'submissionToken' in response)
-	{
-		inputImage.src = response.inputPath;
-		outputImage.src = response.outputPath;
-		label.textContent = response.label;
-		summaryImage.src = response.summaryPath;
-
-		submissionToken = response.submissionToken;
-
-		displayElement('feedback-form',null);
-	}
-	else
-	{
-		inputImage.src = 'static/images/examples/walrus-input-example.png';
-		outputImage.src = 'static/images/examples/walrus-output-example.png';
-		summaryImage.src = 'static/images/examples/walrus-summary-example.png';
-		label.textContent = 'Walrus';
-		heading.textContent = 'Example';
-
-		let errorMessage = 'Upload Failed';
-
-		if (response != null && 'error' in response) 
+		console.log('no validfile');
+		try 
 		{
-	    	errorMessage = response.error;
+			let tempFile = await getImageFromUrl(uploadUrl)
+
+			if(tempFile != null)
+			{
+				uploadFile = tempFile;
+				console.log(tempFile);
+				console.log('tempFile');
+			}
+			else
+			{
+				displayError('Invalid image URL');
+				return;
+			}
+
+			// console.log('success');
+		}
+		catch(err) 
+		{
+			console.log(err);
+			displayError('Image url denied external access')
+			return;
+		}
+	}
+
+
+
+	if(uploadFile != null)
+	{
+		let permissionGallery = getCheckedRadioValue(galleryinputElement1,galleryinputElement2);
+		let permissionDataset = getCheckedRadioValue(datasetinput1,datasetinput2);
+
+		hideElement('message-display');
+		hideError()
+
+		let heading = document.getElementById('upload-heading');
+		let inputImage = document.getElementById('upload-input');
+		let outputImage = document.getElementById('upload-output');
+		let summaryImage = document.getElementById('upload-summary');
+		let label = document.getElementById('upload-label');
+		
+		heading.textContent = "Your upload"
+		inputImage.src = "";
+		outputImage.src = "";
+		summaryImage.src = "";
+		label.textContent = "loading...";
+
+		//prepare get jsondata
+		url = getBaseUrl() + "uploadRequest";
+
+		let headers = { 'Authorization': getToken() };
+		let formData = new FormData();
+		formData.append("image", uploadFile);
+		formData.append("permissionGallery", permissionGallery);
+		formData.append("permissionDataset", permissionDataset);
+
+		let response = null;
+
+		if(headers.Authorization == null)
+		{
+			response = await getJsonData(url,{method: "POST", body: formData});
+		}
+		else
+		{
+			response = await getJsonData(url,{method: 'POST', headers: headers, body: formData});
 		}
 
-		displayError(errorMessage);
+		if( response != null && 'inputPath' in response && 'outputPath' in response && 'summaryPath' in response && 'label' in response && 'submissionToken' in response)
+		{
+			inputImage.src = response.inputPath;
+			outputImage.src = response.outputPath;
+			label.textContent = response.label;
+			summaryImage.src = response.summaryPath;
+
+			submissionToken = response.submissionToken;
+
+			displayElement('feedback-form',null);
+		}
+		else
+		{
+			inputImage.src = 'static/images/examples/walrus-input-example.png';
+			outputImage.src = 'static/images/examples/walrus-output-example.png';
+			summaryImage.src = 'static/images/examples/walrus-summary-example.png';
+			label.textContent = 'Walrus';
+			heading.textContent = 'Example';
+
+			let errorMessage = 'Upload Failed';
+
+			if (response != null && 'error' in response) 
+			{
+		    	errorMessage = response.error;
+			}
+
+			displayError(errorMessage);
+		}
+	}
+	else
+	{
+		displayError('No file selected for upload');
 	}
 }
 
@@ -116,6 +152,8 @@ async function feedbackAttempt()
 		let commentResult = resultcommentElement.value;
 		let commentSite = sitecommentElement.value;
 
+		hideElement('message-display');
+		hideElement('error-display');
 		
 		if(rateClassify != null && rateIsolate != null)
 		{

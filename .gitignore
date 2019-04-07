@@ -1,14 +1,9 @@
-
 #quality of life files
 quickRunFyp.bat
 
-#page renderings to be ignored
-#icw/static/images/results/*
-#icw/static/images/uploads/*
-
 icw/__pycache__/*
 offline/*
-mobile apps/*
-offline/*
-Test HTML/*
 icw/configuration_strings.py
+icw/console_experiment.py
+icw/console_experiment.py
+icw/test_unitTest.py

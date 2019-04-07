@@ -63,9 +63,13 @@
 						</div>
 						<!-- Submit and question box -->
 						<div class="col-sm-4 theme-colour-c">
+							<br>
 							<input id="upload-file" type="file" class="btn btn-primary btn-lg btn-block" value="Submit">
+							<b>OR</b><br>
+							Image URL: <input id="upload-url" class="w-80" type="text" value="" placeholder="URL">
+							<br><br>
 							<input onclick="uploadAttempt();" type="button" class="btn btn-primary btn-lg btn-block" value="Upload Image">
-
+							<br>
 							<div class="row">
 								<div class="col-sm-8 ">
 									<p>Can your uploaded image be added to the icwildlife gallery? (Images are screened before being added to gallery)</p>
@@ -147,7 +151,7 @@
 					<!-- Third feedback row -->
 					<div class="row border rounded theme-colour-b ">
 						<div class="col-sm-12 ">
-							<p>  Any comments on the labeling or background removal of the reult image?</p>
+							<p>  Any comments on the labeling or background removal of the result image?</p>
 						</div>
 						<div class="col-sm-12 ">
 							<input id='feedback-resultcomment' style="margin:1%" class=" w-100 " type="text" name="commentResult" value="">
@@ -157,13 +161,13 @@
 					<!-- Fourth feedback row -->
 					<div class="row border rounded theme-colour-b ">
 						<div class="col-sm-8 ">
-							<p>  Comments or suggestions for this website?</p>
+							<p>  Is there anything you like or dislike about the webiste, or anything you think should be changed?</p>
 							<input id='feedback-sitecomment' style="margin:1%" class=" w-100 " type="text" name="commentSite" value="">
 						</div>
 						
 						<div class="col-sm-4">
 							  <!-- <input  type="submit" class="btn btn-primary btn-lg btn-block h-100 " value="Submit"> -->
-							  <input onclick="feedbackAttempt();" type="button" class="btn btn-primary btn-lg btn-block " value="Submit">
+							  <input style="margin:2%" onclick="feedbackAttempt();" type="button" class="btn btn-primary btn-lg btn-block " value="Submit">
 						</div>
 
 					</div>

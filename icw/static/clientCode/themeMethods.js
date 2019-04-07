@@ -3,12 +3,10 @@ const themes = ['dark', 'electricity','sunset', 'pastel'];
 //## START THEME MANAGEMENT ##//
 function getTheme()
 {
-	console.log('gettheme()');
 	var theme = themes[0];
 
 	if ("theme" in sessionStorage) 
 	{
-		console.log('theme in sessionStorage');
     	theme = sessionStorage.theme;
 	}
 

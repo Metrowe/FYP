@@ -1,10 +1,8 @@
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import Integer, String, Boolean, Text
+from sqlalchemy import Integer, Boolean, Text
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import backref
 
 Base = declarative_base()

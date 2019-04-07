@@ -14,6 +14,8 @@ def deleteFile(path):
 	else:
 		print("Delete file failed : File does not exist")
 
+	return success
+
 def getUniqueTimeStamp():
 	t = time.localtime(time.time())
 

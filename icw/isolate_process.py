@@ -1,6 +1,5 @@
 import numpy as np
 import cv2
-from matplotlib import pyplot as plt
 from sklearn.cluster import KMeans
 
 def preprocess(image):
@@ -304,27 +303,33 @@ def getSummaryImage(image,infoContours):
 	return summaryImage
 
 def isolateImage(imagePath,isolatePath,summaryPath):
+	success = False
+
 	image = cv2.imread(imagePath)
 
-	algorithm = 'SLIC'
-	arg1 = 50
-	arg2 = 40
+	if image is not None:
+		algorithm = 'SLIC'
+		arg1 = 50
+		arg2 = 40
 
-	imagePreprocess = preprocess(image)
+		imagePreprocess = preprocess(image)
 
-	contours = getSuperpixelsContours(imagePreprocess,algorithm,arg1,arg2)
+		contours = getSuperpixelsContours(imagePreprocess,algorithm,arg1,arg2)
 
-	infoContours = getInfoContours(imagePreprocess, contours)
+		infoContours = getInfoContours(imagePreprocess, contours)
 
-	grid = assignToGrid(imagePreprocess,infoContours)
+		grid = assignToGrid(imagePreprocess,infoContours)
 
-	rect = estimateBoundingRect(imagePreprocess,grid)
+		rect = estimateBoundingRect(imagePreprocess,grid)
 
-	isolateImage = grabCut(imagePreprocess,rect)
-	summaryImage = getSummaryImage(imagePreprocess,infoContours)
+		isolateImage = grabCut(imagePreprocess,rect)
+		summaryImage = getSummaryImage(imagePreprocess,infoContours)
 
-	cv2.imwrite(isolatePath,isolateImage)
-	cv2.imwrite(summaryPath,summaryImage)
+		if isolatePath != None:
+			cv2.imwrite(isolatePath,isolateImage)
+		if summaryPath != None:
+			cv2.imwrite(summaryPath,summaryImage)
 
+		success = True
 
-	return True
+	return success

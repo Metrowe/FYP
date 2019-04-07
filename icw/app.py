@@ -2,11 +2,7 @@
 from flask import Flask, render_template, request, jsonify
 
 # Misc imports
-import tensorflow
-import cv2
 import os
-import json
-import jwt
 
 import classify_process
 import isolate_process
@@ -148,7 +144,7 @@ def uploadRequest():
 	return jsonify(response)
 
 @app.route('/loginrequest', methods=['POST'])
-def loginrequest():
+def loginRequest():
 	username, password = web_handling.getArgs(request.values, 'username', 'password')
 	username = web_handling.getValidString(username)
 	password = web_handling.getValidString(password)
@@ -169,7 +165,7 @@ def loginrequest():
 	return jsonify(response)
 
 @app.route('/signuprequest', methods=['POST'])
-def signuprequest():
+def signupRequest():
 	username, password, confirmpassword = web_handling.getArgs(request.values, 'username', 'password','confirmpassword')
 	username = web_handling.getValidString(username)
 	password = web_handling.getValidString(password)

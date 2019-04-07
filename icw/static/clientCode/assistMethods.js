@@ -86,6 +86,41 @@ async function getJsonData(url, options)
 	return returnData;
 }
 
+// blob
+async function getImageFromUrl(url)
+{
+	let imageFile = null;
+	await fetch(url)
+	.then(resp => 
+	{
+		if(resp.status == 200)
+		{
+			let blob = resp.blob()
+			imageFile = new File([blob], 'tempFile.png', {type: 'image/png', lastModified: Date.now()});
+		}
+	});
+
+	return imageFile;
+}
+
+
+// async function getImageFromUrl(url)
+// {
+// 	let imageFile = null;
+// 	await fetch(url)
+// 		.then(resp => resp.blob())
+// 		.then(blob => {
+	
+
+
+// 		imageFile = new File([blob], 'tempFile.png', {type: 'image/png', lastModified: Date.now()});
+
+// 	});
+
+// 	return imageFile;
+// }
+
+
 function validString(str)
 {
 	if(!/ /.test(str) && str!='')

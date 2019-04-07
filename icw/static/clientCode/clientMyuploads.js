@@ -1,7 +1,7 @@
 function getImageMarkup(path,label)
 {
 	return `
-		<div class="col-md-4 theme-colour-c">
+		<div class=" col-lg-3 col-md-4 col-sm-6 col-12 theme-colour-c">
 			<div style="margin:3%">
 				<img class="img-responsive border mx-auto d-block" src="${path}" width="100%" ">
 			</div>

@@ -1,5 +1,4 @@
-from flask import Flask, render_template, request, jsonify
-import cv2
+from flask import request
 
 def getArgs(requestValues, *expected):
 	results = []

@@ -1,16 +1,3 @@
-function validString(str)
-{
-	if(!/ /.test(str) && str!='')
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-
-
 async function loginAttempt()
 {
 	let usernameElement = document.getElementById('login-username');

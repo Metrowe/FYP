@@ -7,6 +7,7 @@ checkpoint_path = "training_model/cp.ckpt"
 class_names = ['antelope','bat','beaver','blue+whale','bobcat','buffalo','chihuahua','chimpanzee','collie','cow','dalmatian','deer','dolphin','elephant','fox','german+shepherd','giant+panda','giraffe','gorilla','grizzly+bear','hamster','hippopotamus','horse','humpback+whale','killer+whale','leopard','lion','mole','moose','mouse','otter','ox','persian+cat','pig','polar+bear','rabbit','raccoon','rat','rhinoceros','seal','sheep','siamese+cat','skunk','spider+monkey','squirrel','tiger','walrus','weasel','wolf','zebra']
 
 def createModel():
+	# Create an empty sequential model
 	model = keras.models.Sequential()
 	model.add(keras.layers.Conv2D(filters=16,kernel_size=2,padding="same",activation="relu",input_shape=(200, 200, 3)))
 	model.add(keras.layers.MaxPooling2D(pool_size=2))
