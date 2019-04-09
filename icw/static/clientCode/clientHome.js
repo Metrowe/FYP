@@ -10,22 +10,18 @@ async function uploadAttempt()
 	let fileUploadElement = document.getElementById('upload-file');
 	let urlUploadElement = document.getElementById('upload-url');
 
-	// let uploadUrl = 'http://127.0.0.1:5000/static/images/original/2019-3-23_1-10-36_sLDNf.png';
-	// let uploadUrl = 'https://www.akc.org/wp-content/themes/akc/component-library/assets/img/welcome.jpg';
 	let uploadUrl = urlUploadElement.value;
 
 	let uploadFile = null;
 
+	hideElement('feedback-form');
+
 	if(fileUploadElement.files[0] != null)
 	{
 		uploadFile = fileUploadElement.files[0];
-		console.log(uploadFile);
-		console.log('file attached');
 	}
 	else if(validString(uploadUrl))
-	// else if(validString(usernameElement.value))
 	{
-		console.log('no validfile');
 		try 
 		{
 			let tempFile = await getImageFromUrl(uploadUrl)
@@ -33,16 +29,12 @@ async function uploadAttempt()
 			if(tempFile != null)
 			{
 				uploadFile = tempFile;
-				console.log(tempFile);
-				console.log('tempFile');
 			}
 			else
 			{
 				displayError('Invalid image URL');
 				return;
 			}
-
-			// console.log('success');
 		}
 		catch(err) 
 		{
@@ -51,8 +43,6 @@ async function uploadAttempt()
 			return;
 		}
 	}
-
-
 
 	if(uploadFile != null)
 	{
